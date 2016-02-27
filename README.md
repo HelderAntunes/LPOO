@@ -1,2 +1,2 @@
-# LPOO
-Jogo do Labirinto
+# Projeto guiado de LPOO
+Autores: Helder Antunes e Pedro Pacheco
