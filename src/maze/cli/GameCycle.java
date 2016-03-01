@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 import maze.logic.GameState;
 import maze.logic.Position.Direction;
-
+import maze.logic.GameState.Dificulty;
 /**
  * Represents a cycle of game.
  */
@@ -15,17 +15,33 @@ public class GameCycle {
 	 * Contains the cycle of game.
 	 */
 	public GameCycle() {
+		System.out.println("Selecione a dificuldade pretendida:");
+		System.out.println("1 -> FÃ¡cil(dragÃ£o parado)");
+		System.out.println("2 -> MÃ©dio(dragÃ£o com movimentaÃ§Ã£o e pode adormecer)");
+		System.out.println("3 -> DÃ­ficil(dragÃ£o com movimentaÃ§Ã£o e sempre acordado)");
+		Scanner s = new Scanner(System.in);
+		Dificulty dificulty = Dificulty.EASY;
+		int d=s.nextInt();
+		switch(d){
+		case 1:
+			dificulty = Dificulty.EASY;
+			break;
+		case 2:	
+			dificulty = Dificulty.MEDIUM;
+			break;
+		case 3:
+			dificulty = Dificulty.HARD;
+			break;
+		}
 		char[][] boardOfMaze = createBoard();
 		GameState gamest = new GameState(boardOfMaze);
-		
-		Scanner s = new Scanner(System.in);
 		
 		while(gamest.isFinished() == false){
 			char[][] gameBoard = gamest.getGameBoard();
 			printBoard(gameBoard);
 			
 			int move;
-			System.out.println("Movimento do herói:");
+			System.out.println("Movimento do herï¿½i:");
 			System.out.println("1 -> esquerda");
 			System.out.println("2 -> direita");
 			System.out.println("3 -> cima");
@@ -33,7 +49,7 @@ public class GameCycle {
 			System.out.print(">> ");
 			move = s.nextInt();
 			
-			Direction dir = null;
+			Direction dir = Direction.NONE;
 			switch(move){
 			case 1:
 				dir = Direction.LEFT;
@@ -56,14 +72,14 @@ public class GameCycle {
 				gamest.update();
 			}
 			else{
-				System.out.println("Movimentação inválida. Tente de novo...");
+				System.out.println("Movimentaï¿½ï¿½o invï¿½lida. Tente de novo...");
 			}
 		}
 		
 		if(gamest.heroIsAlive())
-			System.out.println("Jogo terminou. O herói consegui escapar!!!" );
+			System.out.println("Jogo terminou. O herï¿½i consegui escapar!!!" );
 		else
-			System.out.println("Jogo terminou. O herói morreu :(" );
+			System.out.println("Jogo terminou. O herï¿½i morreu :(" );
 		
 		s.close();
 	}

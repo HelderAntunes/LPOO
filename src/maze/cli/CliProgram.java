@@ -1,3 +1,4 @@
+
 package maze.cli;
 
 /**

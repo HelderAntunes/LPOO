@@ -6,6 +6,7 @@ package maze.logic;
 public class Sword extends MazeElement{
 	
 	private boolean isTaken;
+	private boolean isInSamePosOfDragon;
 	
 	/**
 	 * Constructor of Sword.
@@ -39,7 +40,15 @@ public class Sword extends MazeElement{
 	public char getSymbol(){
 		if(isTaken)
 			return ' ';
-		else
-			return 'E';
+		else{
+			if(isInSamePosOfDragon)
+				return 'F';
+			else
+				return 'E';
+		}
+		
+	}
+	public void setEqualsPosDragon(boolean isInSamePos){
+		isInSamePosOfDragon = isInSamePos;
 	}
 }

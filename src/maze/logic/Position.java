@@ -8,7 +8,7 @@ public class Position {
 	/**
 	 * Represents the four possibles directions of a move.
 	 */
-	public enum Direction {LEFT, RIGHT, DOWN, UP}
+	public enum Direction {LEFT, RIGHT, DOWN, UP, NONE}
 
 	private int x;
 	private int y;
