@@ -49,16 +49,16 @@ public class Position {
 	public void changePos(Direction dir) {
 		switch(dir){
 		case LEFT:
-			y -= 1;
+			x -= 1;
 			break;
 		case RIGHT:
-			y += 1;
-			break;
-		case DOWN:
 			x += 1;
 			break;
+		case DOWN:
+			y += 1;
+			break;
 		case UP:
-			x -= 1;
+			y -= 1;
 			break;
 		default: 
 			break;

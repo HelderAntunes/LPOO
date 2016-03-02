@@ -12,14 +12,8 @@ public class Maze {
 	 * @param board 
 	 */
 	public Maze(char[][] board){
-		for(int i = 0;i < board.length;i++)
-			for(int j = 0;j < board.length;j++)
-				if(board[i][j] == 'S'){
-					exitPos = new Position(i, j);
-					break;
-				}
 		this.board = board;
-		
+		exitPos = new Position(9, 5);
 	}
 	
 	/**
@@ -29,7 +23,7 @@ public class Maze {
 	 * @return the symbol in given position
 	 */
 	public char getSquare(Position pos){
-		return board[pos.getX()][pos.getY()];
+		return board[pos.getY()][pos.getX()];
 	}
 	
 	/**
