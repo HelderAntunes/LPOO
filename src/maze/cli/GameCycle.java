@@ -1,5 +1,6 @@
 package maze.cli;
 
+import java.util.Arrays;
 import java.util.Scanner;
 import maze.logic.GameState;
 import maze.logic.Position.Direction;
@@ -68,17 +69,40 @@ public class GameCycle {
 	 * @return the board of maze
 	 */
 	public static char[][] createBoard(){
-		char[][] board = {
-						{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
-						{'X', 'H', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
-						{'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X'},
-						{'X', 'D', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X'},
-						{'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X'},
-						{'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'S'},
-						{'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X'},
-						{'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X'},
-						{'X', 'E', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X'},
-						{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'}};
+		char[][] board=new char[10][10];
+		char parede='X';
+		char branco=' ';
+		char saida='S';
+		// set blank
+		for(int i=1;i<9;i++)
+			Arrays.fill(board[i], branco);
+
+		// set walls
+		for(int j=0;j<10;j++){
+			board[0][j]=parede;
+			board[9][j]=parede;
+			board[j][0]=parede;
+			board[j][9]=parede;
+		}
+		for(int p=2;p<9;p++)
+			for(int l=2;l<4;l++){
+				if(p==5)
+					continue;
+				else
+					board[p][l]=parede;
+			}
+		for(int m=2;m<8;m++){
+			if(m==5)
+				continue;
+			else
+				board[m][5]=parede;
+		}
+		for(int n=2;n<8;n++){
+			board[n][7]=parede;
+		}
+
+		board[5][9] = saida;
+
 		return board;
 	}
 	
@@ -146,7 +170,7 @@ public class GameCycle {
 	}
 
 	public void exitGame(GameState gamest){
-		if(gamest.getHero().isAlive())
+		if(gamest.heroIsAlive())
 			System.out.println("Jogo terminou. O heroi consegui escapar!!!" );
 		else
 			System.out.println("Jogo terminou. O heroi morreu :(" );
