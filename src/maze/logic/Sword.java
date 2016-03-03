@@ -4,10 +4,9 @@ package maze.logic;
  * Represents a sword.
  */
 public class Sword extends MazeElement{
-	
-	private boolean isTaken;
-	private boolean isInSamePosOfDragon;
-	
+
+	private boolean isTaken;;
+
 	/**
 	 * Constructor of Sword.
 	 * Initially the sword is not taken.
@@ -17,7 +16,7 @@ public class Sword extends MazeElement{
 		super(pos);
 		isTaken = false;
 	}
-	
+
 	/**
 	 * Take the sword.
 	 * When the hero is in the same position of sword, the sword is taken.
@@ -25,14 +24,14 @@ public class Sword extends MazeElement{
 	public void take(){
 		isTaken = true;
 	}
-	
+
 	/**
 	 * @return true if sword was taken, false otherwise.
 	 */
 	public boolean wasTaken(){
 		return isTaken;
 	}
-	
+
 	/**
 	 * Get symbol(represented by a char) of sword.
 	 * Return ' ' if sword was taken, 'E' otherwise.
@@ -40,15 +39,7 @@ public class Sword extends MazeElement{
 	public char getSymbol(){
 		if(isTaken)
 			return ' ';
-		else{
-			if(isInSamePosOfDragon)
-				return 'F';
-			else
-				return 'E';
-		}
-		
-	}
-	public void setEqualsPosDragon(boolean isInSamePos){
-		isInSamePosOfDragon = isInSamePos;
+		else
+			return 'E';
 	}
 }

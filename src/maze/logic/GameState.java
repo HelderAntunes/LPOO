@@ -56,27 +56,31 @@ public class GameState {
 	 * updates the state of game. 
 	 */
 	public void update(){
-
-		if(heroIsNearToTheDragon())
-			if(hero.isArmed())
-				dragon.kill();
-			else{
-				if(!dragon.isSleeping())
-					hero.kill();
-			}
-
+		
 		if(heroFoundSword()){
 			sword.take();
 			hero.arm();
 		}
-
+		
+		killDragonOrHeroIfNecessary();
+		
 		if(dificulty.equals(Dificulty.MEDIUM))
 			updateSleepingOfDragon();
 
 		if(dragonCanMove())
 			generateDragonNewMove();
+		
+		killDragonOrHeroIfNecessary();
 
 		finishGameIfGameIsFinish();
+	}
+	
+	private void killDragonOrHeroIfNecessary(){
+		if(heroIsNearToTheDragon())
+			if(hero.isArmed())
+				dragon.kill();
+			else if(!dragon.isSleeping())
+					hero.kill();
 	}
 
 	/**
@@ -126,38 +130,40 @@ public class GameState {
 
 	private void generateDragonNewMove(){
 		Random r = new Random();
-		int move = r.nextInt(5);
+		int move;
 		Direction dir = Direction.NONE;
-
-		switch(move){
-		case 1:
-			dir = Direction.LEFT;
-			break;
-		case 2:
-			dir = Direction.RIGHT;
-			break;
-		case 3:
-			dir = Direction.UP;
-			break;
-		case 4:
-			dir = Direction.DOWN;
-			break;
-		default:
-			break;
-		}
-
-		if(dragonMoveIsValid(dir))
-			moveDragon(dir);
+		
+		do{
+			move = r.nextInt(4) + 1;
+			switch(move){
+			case 1:
+				dir = Direction.LEFT;
+				break;
+			case 2:
+				dir = Direction.RIGHT;
+				break;
+			case 3:
+				dir = Direction.UP;
+				break;
+			case 4:
+				dir = Direction.DOWN;
+				break;
+			default:
+				break;
+			}
+		}while(dragonMoveIsInvalid(dir));
+		
+		moveDragon(dir);
 	}
 
-	private boolean dragonMoveIsValid(Direction dir){
+	private boolean dragonMoveIsInvalid(Direction dir){
 		Position dragonPos = dragon.getPosition();
 		dragonPos.changePos(dir);
 		char squareOfNewPos = maze.getSquare(dragonPos);
-		if(squareOfNewPos == 'X' || squareOfNewPos == 'S')
-			return false;
-		else
+		if(squareOfNewPos == 'X' || squareOfNewPos == 'S' || squareOfNewPos == 'H')
 			return true;
+		else
+			return false;
 	}
 
 	private void moveDragon(Direction dir){
@@ -169,18 +175,16 @@ public class GameState {
 				&& hero.isArmed()){
 			isFinished = true;	
 		}
-		if(!hero.isAlive()){
+		if(!hero.isAlive())
 			isFinished = true;
-		}
 	}
 
-
-	/**
-	 * Get Hero.
-	 * @return hero
-	 */
 	public Hero getHero(){
 		return hero;
+	}
+	
+	public Dragon getDragon(){
+		return dragon;
 	}
 
 	/**
