@@ -195,6 +195,7 @@ public class GameState {
 		return isFinished;
 	}
 
+
 	/**
 	 * get the game board.
 	 * The game board is a maze with the elements represented.
@@ -237,6 +238,10 @@ public class GameState {
 			return false;
 		else
 			return true;
+	}
+	
+	public Sword getSword(){
+		return this.sword;
 	}
 }
 

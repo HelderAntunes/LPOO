@@ -42,4 +42,6 @@ public class Sword extends MazeElement{
 		else
 			return 'E';
 	}
+	
+	
 }
