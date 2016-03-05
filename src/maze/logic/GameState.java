@@ -1,6 +1,5 @@
 package maze.logic;
 
-import java.lang.Math;
 import java.util.Random;
 
 import maze.logic.Position.Direction;
@@ -89,17 +88,7 @@ public class GameState {
 	 * equal or less than 1 in horizontal or vertical direction
 	 */
 	private boolean heroIsNearToTheDragon(){
-		int xH = hero.getPosition().getX();
-		int yH = hero.getPosition().getY();
-		int xD = dragon.getPosition().getX();
-		int yD = dragon.getPosition().getY();
-
-		if(xH == xD && Math.abs(yH-yD) <= 1)
-			return true;
-		if(yH == yD && Math.abs(xH-xD) <= 1)
-			return true;
-
-		return false;
+		return hero.getPosition().positionsAreNearOfeachOther(dragon.getPosition());
 	}
 
 	/**

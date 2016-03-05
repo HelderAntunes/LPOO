@@ -64,4 +64,16 @@ public class Position {
 			break;
 		}
 	}
+	
+	public boolean positionsAreNearOfeachOther(Position otherPos){
+		int xD = otherPos.getX();
+		int yD = otherPos.getY();
+
+		if(x == xD && Math.abs(y-yD) <= 1)
+			return true;
+		if(y == yD && Math.abs(x-xD) <= 1)
+			return true;
+
+		return false;
+	}
 }

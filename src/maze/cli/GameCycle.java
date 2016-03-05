@@ -4,6 +4,7 @@ import java.util.Scanner;
 import maze.logic.GameState;
 import maze.logic.Position.Direction;
 import maze.logic.GameState.Dificulty;
+import maze.logic.MazeBuilder;
 
 /**
  * Represents a cycle of game.
@@ -29,7 +30,8 @@ public class GameCycle {
 	
 	public GameState prepareGame(Scanner s){
 		Dificulty dificulty = chooseDificulty(s);
-		char[][] boardOfMaze = createBoard();
+		int n = chooseBoardDimensions(s);
+		char[][] boardOfMaze = new MazeBuilder().getRandomMaze(n);
 		GameState gamest = new GameState(boardOfMaze, dificulty);
 		return gamest;
 	}
@@ -63,23 +65,18 @@ public class GameCycle {
 		return dificulty;
 	}
 	
-	/**
-	 * Create the board of maze.
-	 * @return the board of maze
-	 */
-	public static char[][] createBoard(){
-		char[][] board = {
-						{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
-						{'X', 'H', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
-						{'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X'},
-						{'X', 'D', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X'},
-						{'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X'},
-						{'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'S'},
-						{'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X'},
-						{'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X'},
-						{'X', 'E', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X'},
-						{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'}};
-		return board;
+	public int chooseBoardDimensions(Scanner s){
+		System.out.print("Escolha as dimensoes do tabuleiro N x N, em que N é ímpar e N >= 7: ");
+		int n;
+		while(true){
+			if(s.hasNextInt()){
+				n = s.nextInt();
+				if(n%2 != 0) break;
+				else System.out.print("Escolha inválida, tente de novo: ");	
+			}
+			else System.out.print("Escolha inválida, tente de novo: ");		
+		}
+		return n;
 	}
 	
 	public void playGameRound(GameState gamest, Scanner s){
