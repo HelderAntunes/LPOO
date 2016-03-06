@@ -10,24 +10,26 @@ public class AddingCharactersToMaze {
 	
 	public char[][] getMazeWithCharacters(char[][] maze){
 		this.maze = maze;
-		swordPos = creatPosition();
+		
 		heroPos = creatPosition();
+		this.maze[heroPos.getX()][heroPos.getY()] = 'H';
+		
+		swordPos = creatPosition();
+		this.maze[swordPos.getX()][swordPos.getY()] = 'E';
+		
 		do{
 			dragonPos = creatPosition();
 		}while(dragonPos.positionsAreNearOfeachOther(heroPos));
-		
-		this.maze[swordPos.getX()][swordPos.getY()] = 'E';
-		this.maze[heroPos.getX()][heroPos.getY()] = 'H';
 		this.maze[dragonPos.getX()][dragonPos.getY()] = 'D';
 		
 		return maze;
 	}
 	
 	private Position creatPosition(){
-		Position pos;
+		Position pos = null;
 		do{
 			pos = generateRandomPosition();
-		}while(positionIsInvalid(pos));
+		}while(pos == null || positionIsInvalid(pos));
 		return pos;
 	}
 

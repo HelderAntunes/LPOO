@@ -31,7 +31,7 @@ public class GameCycle {
 	public GameState prepareGame(Scanner s){
 		Dificulty dificulty = chooseDificulty(s);
 		int n = chooseBoardDimensions(s);
-		char[][] boardOfMaze = new MazeBuilder().getRandomMaze(n);
+		char[][] boardOfMaze = new MazeBuilder().buildMaze(n);
 		GameState gamest = new GameState(boardOfMaze, dificulty);
 		return gamest;
 	}
@@ -66,15 +66,15 @@ public class GameCycle {
 	}
 	
 	public int chooseBoardDimensions(Scanner s){
-		System.out.print("Escolha as dimensoes do tabuleiro N x N, em que N é ímpar e N >= 7: ");
+		System.out.print("Escolha as dimensoes do tabuleiro N x N, em que N ï¿½ ï¿½mpar e N >= 7: ");
 		int n;
 		while(true){
 			if(s.hasNextInt()){
 				n = s.nextInt();
-				if(n%2 != 0) break;
-				else System.out.print("Escolha inválida, tente de novo: ");	
+				if(n%2 != 0 && n >= 5) break;
+				else System.out.print("Escolha invï¿½lida, tente de novo: ");	
 			}
-			else System.out.print("Escolha inválida, tente de novo: ");		
+			else System.out.print("Escolha invï¿½lida, tente de novo: ");		
 		}
 		return n;
 	}

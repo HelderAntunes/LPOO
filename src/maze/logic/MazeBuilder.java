@@ -5,7 +5,7 @@ import java.util.Random;
 import maze.logic.Position.Direction;
 
 
-public class MazeBuilder {
+public class MazeBuilder implements IMazeBuilder{
 
 	private char[][] maze;
 	private char[][] visitedCells;
@@ -14,7 +14,7 @@ public class MazeBuilder {
 	private int rowAtualPos;
 	private int columnAtualPos;
 
-	public char[][] getRandomMaze(int n) {
+	public char[][] buildMaze(int n) {
 		this.n = n;
 
 		initLab();
@@ -23,7 +23,7 @@ public class MazeBuilder {
 		initVisitedCells();
 		pathHistory = new Stack<Position>();
 		pathHistory.push(new Position(rowAtualPos/2, columnAtualPos/2));
-		
+
 		while(true){
 			if(allNeighborsCellsHasBeenVisited()){
 				if(pathHistory.isEmpty())
@@ -45,7 +45,7 @@ public class MazeBuilder {
 		maze = new AddingCharactersToMaze().getMazeWithCharacters(maze);
 		return maze;
 	}
-	
+
 	private Direction getNewDir(Position oldPos, Position newPos){
 		Direction newDir = null;
 		if(oldPos.getY() == newPos.getY()+1)
@@ -75,78 +75,38 @@ public class MazeBuilder {
 	}
 
 	private void updateMaze(Direction dir){
-		updateLab(dir);
-		updateVisitedCells(dir);
-		updateAtualPosition(dir);
-		updatePathHistory();
-	}
-	
-	private void updatePathHistory(){
-		pathHistory.push(new Position(rowAtualPos/2,columnAtualPos/2));
-	}
-
-	private void updateAtualPosition(Direction dir){
+		int rowVisCell = rowAtualPos/2;
+		int colVisCell = columnAtualPos/2;
+		maze[rowAtualPos][columnAtualPos] = ' ';
 		switch(dir){
 		case LEFT:
+			maze[rowAtualPos][columnAtualPos-1] = ' ';
+			maze[rowAtualPos][columnAtualPos-2] = '+';
+			visitedCells[rowVisCell][colVisCell-1] = '+';
 			columnAtualPos -= 2;
 			break;
 		case UP:
+			maze[rowAtualPos-1][columnAtualPos] = ' ';
+			maze[rowAtualPos-2][columnAtualPos] = '+';
+			visitedCells[rowVisCell-1][colVisCell] = '+';
 			rowAtualPos -= 2;
 			break;
 		case RIGHT:
+			maze[rowAtualPos][columnAtualPos+1] = ' ';
+			maze[rowAtualPos][columnAtualPos+2] = '+';
+			visitedCells[rowVisCell][colVisCell+1] = '+';
 			columnAtualPos += 2;
 			break;
 		case DOWN:
+			maze[rowAtualPos+1][columnAtualPos] = ' ';
+			maze[rowAtualPos+2][columnAtualPos] = '+';
+			visitedCells[rowVisCell+1][colVisCell] = '+';
 			rowAtualPos += 2;
 			break;
 		default:
 			break;
 		}
-	}
-
-	private void updateVisitedCells(Direction dir){
-		int rowVisCell = rowAtualPos/2;
-		int colVisCell = columnAtualPos/2;
-		switch(dir){
-		case LEFT:
-			visitedCells[rowVisCell][colVisCell-1] = '+';
-			break;
-		case UP:
-			visitedCells[rowVisCell-1][colVisCell] = '+';
-			break;
-		case RIGHT:
-			visitedCells[rowVisCell][colVisCell+1] = '+';
-			break;
-		case DOWN:
-			visitedCells[rowVisCell+1][colVisCell] = '+';
-			break;
-		default:
-			break;
-		}
-	}
-
-	private void updateLab(Direction dir){
-		switch(dir){
-		case LEFT:
-			maze[rowAtualPos][columnAtualPos-1] = ' ';
-			maze[rowAtualPos][columnAtualPos-2] = '+';
-			break;
-		case UP:
-			maze[rowAtualPos-1][columnAtualPos] = ' ';
-			maze[rowAtualPos-2][columnAtualPos] = '+';
-			break;
-		case RIGHT:
-			maze[rowAtualPos][columnAtualPos+1] = ' ';
-			maze[rowAtualPos][columnAtualPos+2] = '+';
-			break;
-		case DOWN:
-			maze[rowAtualPos+1][columnAtualPos] = ' ';
-			maze[rowAtualPos+2][columnAtualPos] = '+';
-			break;
-		default:
-			break;
-		}
-		maze[rowAtualPos][columnAtualPos] = ' ';
+		pathHistory.push(new Position(rowAtualPos/2,columnAtualPos/2));
 	}
 
 	private boolean directionIsValid(Direction dir){
