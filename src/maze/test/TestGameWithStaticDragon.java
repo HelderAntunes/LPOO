@@ -70,7 +70,7 @@ public class TestGameWithStaticDragon {
 		gamest.update();
 		gamest.moveHero(Direction.RIGHT);
 		gamest.update();
-		assertEquals(false,gamest.getDragon().isAlive());
+		assertEquals(false,gamest.getDragons().get(0).isAlive());
 		
 	}
 	

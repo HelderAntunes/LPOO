@@ -39,8 +39,11 @@ public class Dragon extends CharacterOfGame{
 	public boolean isSleeping(){
 		return isSleeping;
 	}
-
-
+	
+	public boolean canMove(){
+		if(isSleeping == false && isAlive == true) return true;
+		else return false; 
+	}
 }
 
 

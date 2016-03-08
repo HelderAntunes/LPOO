@@ -12,6 +12,7 @@ public class Hero extends CharacterOfGame{
 	 */
 	public Hero(Position pos){
 		super(pos);
+		isArmed = false;
 	}
 	
 	/**

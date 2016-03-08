@@ -1,6 +1,8 @@
 package maze.cli;
 
 import java.util.Scanner;
+
+import maze.logic.AddingCharactersToMaze;
 import maze.logic.GameState;
 import maze.logic.Position.Direction;
 import maze.logic.GameState.Dificulty;
@@ -27,15 +29,30 @@ public class GameCycle {
 
 		s.close();
 	}
-	
+
 	public GameState prepareGame(Scanner s){
 		Dificulty dificulty = chooseDificulty(s);
 		int n = chooseBoardDimensions(s);
+		int numDragons = getNumberOfDragons(dificulty);
 		char[][] boardOfMaze = new MazeBuilder().buildMaze(n);
+		boardOfMaze = new AddingCharactersToMaze().addDragonsInMaze(boardOfMaze, numDragons);
 		GameState gamest = new GameState(boardOfMaze, dificulty);
 		return gamest;
 	}
-	
+
+	public int getNumberOfDragons(Dificulty dificulty){
+		switch(dificulty){
+		case EASY:
+			return 1;
+		case MEDIUM:
+			return 2;
+		case HARD:
+			return 3;
+		default:
+			return 1;
+		}
+	}
+
 	public Dificulty chooseDificulty(Scanner s){
 		Dificulty dificulty = null;
 
@@ -64,7 +81,7 @@ public class GameCycle {
 		}
 		return dificulty;
 	}
-	
+
 	public int chooseBoardDimensions(Scanner s){
 		System.out.print("Escolha as dimensoes do tabuleiro N x N, em que N � �mpar e N >= 7: ");
 		int n;
@@ -78,7 +95,7 @@ public class GameCycle {
 		}
 		return n;
 	}
-	
+
 	public void playGameRound(GameState gamest, Scanner s){
 		char[][] gameBoard = gamest.getGameBoard();
 		printBoard(gameBoard);
@@ -92,7 +109,7 @@ public class GameCycle {
 		else
 			System.out.println("Movimentacao invalida. Tente de novo...");
 	}
-	
+
 	/**
 	 * Receives a game board as argument ad print it.
 	 * @param gameBoard
@@ -107,7 +124,7 @@ public class GameCycle {
 					System.out.print(" ");
 				}
 	}
-	
+
 	public Direction chooseHeroMoviment(Scanner s){
 		int move;
 		Direction dir = null;
@@ -143,6 +160,8 @@ public class GameCycle {
 	}
 
 	public void exitGame(GameState gamest){
+		char[][] gameBoard = gamest.getGameBoard();
+		printBoard(gameBoard);
 		if(gamest.getHero().isAlive())
 			System.out.println("Jogo terminou. O heroi consegui escapar!!!" );
 		else

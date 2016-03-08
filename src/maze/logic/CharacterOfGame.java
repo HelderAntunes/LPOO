@@ -8,7 +8,7 @@ import maze.logic.Position.Direction;
  */
 public class CharacterOfGame extends MazeElement{
 	
-	private boolean isAlive;
+	protected boolean isAlive;
 	
 	/**
 	 * Constructor of CharacterOfGame.
@@ -29,7 +29,7 @@ public class CharacterOfGame extends MazeElement{
 	/**
 	 * Kill the character.
 	 */
-	public void kill(){
+	public void isKilled(){
 		isAlive = false;
 	}
 	

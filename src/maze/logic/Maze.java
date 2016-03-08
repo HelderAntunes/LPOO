@@ -22,6 +22,10 @@ public class Maze {
 		
 	}
 	
+	public void setSquare(Position pos, char c){
+		board[pos.getX()][pos.getY()] = c;
+	}
+	
 	/**
 	 * Get the symbol(represented by a char) of maze in given position.
 	 * For example, if the char is 'X' there is a wall in given position.

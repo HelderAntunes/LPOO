@@ -18,10 +18,10 @@ public class testGameWithMobileAndSleepingDragon {
 	public void testIsSleeping() {
 		GameState gamest = new GameState(m1, Dificulty.MEDIUM);
 		gamest.update();
-		if(gamest.getDragon().isSleeping())
-			assertEquals('d',gamest.getDragon().getSymbol());
+		if(gamest.getDragons().get(0).isSleeping())
+			assertEquals('d',gamest.getDragons().get(0).getSymbol());
 		else
-			assertEquals('D',gamest.getDragon().getSymbol());
+			assertEquals('D',gamest.getDragons().get(0).getSymbol());
 		
 	}
 	

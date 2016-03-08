@@ -1,5 +1,6 @@
 package maze.logic;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import maze.logic.Position.Direction;
@@ -12,9 +13,9 @@ public class GameState {
 	private Dificulty dificulty;
 	private Maze maze;
 	private Hero hero;
-	private Dragon dragon;
 	private Sword sword;
 	private boolean isFinished;
+	private ArrayList<Dragon> dragons;
 
 	/**
 	 * Constructor of GameState.
@@ -22,9 +23,10 @@ public class GameState {
 	 * @param boardOfMaze
 	 */
 	public GameState(char[][] boardOfMaze, Dificulty dificulty) {
-		initializeMazeAndThePositionsOfElements(boardOfMaze);
+		dragons = new ArrayList<Dragon>();
 		isFinished = false;
 		this.dificulty = dificulty;
+		initializeMazeAndThePositionsOfElements(boardOfMaze);
 	}
 
 	private void initializeMazeAndThePositionsOfElements(char[][] boardOfMaze){
@@ -36,7 +38,7 @@ public class GameState {
 					hero = new Hero(new Position(i, j));
 					break;
 				case 'D':
-					dragon = new Dragon(new Position(i, j));
+					dragons.add(new Dragon(new Position(i, j)));
 					break;
 				case 'E':
 					sword = new Sword(new Position(i, j));
@@ -44,8 +46,6 @@ public class GameState {
 				default:
 					break;
 				}
-				if(square != ' ' && square != 'X' && square != 'S')
-					boardOfMaze[i][j] = ' ';
 			}
 		maze = new Maze(boardOfMaze);
 	}
@@ -55,31 +55,42 @@ public class GameState {
 	 * updates the state of game. 
 	 */
 	public void update(){
-		
+
 		if(heroFoundSword()){
 			sword.take();
 			hero.arm();
 		}
-		
-		killDragonOrHeroIfNecessary();
-		
+
+		killDragonsOrHeroIfNecessary();
+
 		if(dificulty.equals(Dificulty.MEDIUM))
-			updateSleepingOfDragon();
+			updateSleepingOfDragons();
 
-		if(dragonCanMove())
-			generateDragonNewMove();
-		
-		killDragonOrHeroIfNecessary();
+		if(!dificulty.equals(Dificulty.EASY))
+			updatePositionsOfDragons();
 
-		finishGameIfGameIsFinish();
+		killDragonsOrHeroIfNecessary();
+
+		if(isGameFinished())
+			isFinished = true;
+			
 	}
-	
-	private void killDragonOrHeroIfNecessary(){
-		if(heroIsNearToTheDragon())
-			if(hero.isArmed())
-				dragon.kill();
-			else if(!dragon.isSleeping())
-					hero.kill();
+
+	private void killDragonsOrHeroIfNecessary(){
+		for(Dragon dragon: dragons)
+			if(heroIsNearToTheDragon(dragon) && dragon.isAlive())
+				if(hero.isArmed()){
+					dragon.isKilled();
+					maze.setSquare(dragon.getPosition(), dragon.getSymbol());
+				}
+				else if(!dragon.isSleeping())
+					hero.isKilled();	
+	}
+
+	private void updatePositionsOfDragons(){
+		for(Dragon dragon: dragons)
+			if(dragon.canMove())
+				generateDragonNewMove(dragon);
 	}
 
 	/**
@@ -87,7 +98,7 @@ public class GameState {
 	 * @return true if the distance between the hero and dragon is 
 	 * equal or less than 1 in horizontal or vertical direction
 	 */
-	private boolean heroIsNearToTheDragon(){
+	private boolean heroIsNearToTheDragon(Dragon dragon){
 		return hero.getPosition().positionsAreNearOfeachOther(dragon.getPosition());
 	}
 
@@ -96,34 +107,27 @@ public class GameState {
 	 * @return true if the hero found the sword, false otherwise
 	 */
 	private boolean heroFoundSword(){
-		if(hero.getPosition().equals(sword.getPosition()))
-			return true;
-		return false;
+		if(hero.getPosition().equals(sword.getPosition())) return true;
+		else return false;
 	}
 
-	private void updateSleepingOfDragon(){
+	private void updateSleepingOfDragons(){
 		Random r = new Random();
-		int isSleeping = r.nextInt(2);
-		if(isSleeping == 1)
-			dragon.sleeps();
-		else
-			dragon.wakeUp();
+		for(Dragon dragon: dragons){
+			int isSleeping = r.nextInt(3);
+			if(isSleeping == 0)
+				dragon.sleeps();
+			else
+				dragon.wakeUp();
+		}
 	}
 
-	private boolean dragonCanMove(){
-		if(!dragon.isSleeping() && !dificulty.equals(Dificulty.EASY) && dragon.isAlive())
-			return true;
-		else
-			return false;
-	}
-
-	private void generateDragonNewMove(){
+	private void generateDragonNewMove(Dragon dragon){
 		Random r = new Random();
 		int move;
 		Direction dir = Direction.NONE;
-		
 		do{
-			move = r.nextInt(4) + 1;
+			move = r.nextInt(5);
 			switch(move){
 			case 1:
 				dir = Direction.LEFT;
@@ -140,40 +144,39 @@ public class GameState {
 			default:
 				break;
 			}
-		}while(dragonMoveIsInvalid(dir));
-		
-		moveDragon(dir);
+		}while(dragonMoveIsInvalid(dragon, dir));
+		maze.setSquare(dragon.getPosition(), ' ');
+		dragon.move(dir);
+		maze.setSquare(dragon.getPosition(), dragon.getSymbol());
 	}
 
-	private boolean dragonMoveIsInvalid(Direction dir){
+	private boolean dragonMoveIsInvalid(Dragon dragon, Direction dir){
 		Position dragonPos = dragon.getPosition();
 		dragonPos.changePos(dir);
-		char squareOfNewPos = maze.getSquare(dragonPos);
-		if(squareOfNewPos == 'X' || squareOfNewPos == 'S' || squareOfNewPos == 'H')
+		char square = maze.getSquare(dragonPos);
+		if(square == 'D' || square == 'd' || square == 'H' || square == 'X' || square == 'S')
 			return true;
 		else
 			return false;
 	}
 
-	private void moveDragon(Direction dir){
-		dragon.move(dir);
-	}
-
-	private void finishGameIfGameIsFinish(){
-		if(!dragon.isAlive() && hero.getPosition().equals(maze.getExitPos())
-				&& hero.isArmed()){
-			isFinished = true;	
-		}
-		if(!hero.isAlive())
-			isFinished = true;
+	private boolean isGameFinished(){
+		if((aDragonWasKilled() && hero.getPosition().equals(maze.getExitPos()))
+				|| !hero.isAlive())
+			return true;
+		return false;
 	}
 
 	public Hero getHero(){
 		return hero;
 	}
 	
-	public Dragon getDragon(){
-		return dragon;
+	public ArrayList<Dragon> getDragons(){
+		return dragons;
+	}
+	
+	public Sword getSword(){
+		return sword;
 	}
 
 	/**
@@ -191,19 +194,12 @@ public class GameState {
 	 */
 	public char[][] getGameBoard(){
 		char[][] gameBoard = maze.getBoard();
-		if(hero.getSymbol() != ' ')
-			gameBoard[hero.getPosition().getX()][hero.getPosition().getY()] = hero.getSymbol();
-
-		if(dragon.getPosition().equals(sword.getPosition()))
-			gameBoard[dragon.getPosition().getX()][dragon.getPosition().getY()] = 'F';
-		else{
-			if(dragon.getSymbol() != ' ')
-				gameBoard[dragon.getPosition().getX()][dragon.getPosition().getY()] = dragon.getSymbol();
-			if(sword.getSymbol() != ' ')
-				gameBoard[sword.getPosition().getX()][sword.getPosition().getY()] = sword.getSymbol();
-		}
-
-		return gameBoard.clone();
+		if(!sword.wasTaken())
+			gameBoard[sword.getPosition().getX()][sword.getPosition().getY()] = sword.getSymbol();
+		for(Dragon dragon: dragons)
+			if(dragon.getPosition().equals(sword.getPosition()) && !sword.wasTaken())
+				gameBoard[dragon.getPosition().getX()][dragon.getPosition().getY()] = 'F';
+		return gameBoard;
 	}
 
 	/**
@@ -211,7 +207,9 @@ public class GameState {
 	 * @param dir given direction
 	 */
 	public void moveHero(Direction dir){
+		maze.setSquare(hero.getPosition(), ' ');
 		hero.move(dir);
+		maze.setSquare(hero.getPosition(), hero.getSymbol());
 	}
 
 	/**
@@ -222,15 +220,18 @@ public class GameState {
 	public boolean heroMoveIsValid(Direction dir){
 		Position heroPos = hero.getPosition();
 		heroPos.changePos(dir);
-		char squareOfNewPos = maze.getSquare(heroPos);
-		if(squareOfNewPos == 'X' || (squareOfNewPos == 'S' && dragon.isAlive()))
+		char square = maze.getSquare(heroPos);
+		if(square == 'X' || (square == 'S' && !aDragonWasKilled()))
 			return false;
 		else
 			return true;
 	}
-	
-	public Sword getSword(){
-		return this.sword;
+
+	private boolean aDragonWasKilled(){
+		for(Dragon dragon: dragons)
+			if(!dragon.isAlive())
+				return true;
+		return false;
 	}
 }
 

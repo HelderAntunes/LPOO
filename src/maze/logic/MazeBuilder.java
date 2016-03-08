@@ -42,8 +42,7 @@ public class MazeBuilder implements IMazeBuilder{
 			}
 		}
 		maze[rowAtualPos][columnAtualPos] = ' ';
-		maze = new AddingCharactersToMaze().getMazeWithCharacters(maze);
-		return maze;
+		return new AddingCharactersToMaze().getMazeWithCharacters(maze); // add one dragon
 	}
 
 	private Direction getNewDir(Position oldPos, Position newPos){
