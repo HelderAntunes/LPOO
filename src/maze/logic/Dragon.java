@@ -21,7 +21,7 @@ public class Dragon extends CharacterOfGame{
 	public char getSymbol(){
 		if(isAlive())
 			if(isSleeping)
-				return 'd';
+				return 'd'; 
 			else
 				return 'D';
 		else

@@ -15,7 +15,7 @@ public class GameState {
 	private Hero hero;
 	private Sword sword;
 	private boolean isFinished;
-	private ArrayList<Dragon> dragons;
+	private ArrayList<Dragon> dragons; 
 
 	/**
 	 * Constructor of GameState.
@@ -89,7 +89,7 @@ public class GameState {
 
 	private void updatePositionsOfDragons(){
 		for(Dragon dragon: dragons)
-			if(dragon.canMove())
+			if(dragon.canMove()) 
 				generateDragonNewMove(dragon);
 	}
 

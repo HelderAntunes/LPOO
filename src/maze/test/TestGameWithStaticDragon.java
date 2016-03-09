@@ -11,7 +11,7 @@ public class TestGameWithStaticDragon {
 	char [][] m1 = {{'X', 'X', 'X', 'X', 'X'},
 					{'X', ' ', ' ', 'H', 'S'},
 					{'X', ' ', 'X', ' ', 'X'},
-					{'X', 'E', ' ', 'D', 'X'},
+					{'X', 'E', ' ', 'D', 'X'}, 
 					{'X', 'X', 'X', 'X', 'X'}};
 	
 	char [][] m2 = {{'X', 'X', 'X', 'X', 'X'},
@@ -32,7 +32,7 @@ public class TestGameWithStaticDragon {
 		GameState gamest = new GameState(m1, Dificulty.EASY);
 		assertEquals(false, gamest.heroMoveIsValid(Direction.UP));
 	}
-	@Test(timeout=1000)
+	@Test
 	public void testHeroTakeSword(){
 		GameState gamest = new GameState(m1, Dificulty.EASY);
 		gamest.moveHero(Direction.LEFT);
@@ -55,10 +55,10 @@ public class TestGameWithStaticDragon {
 		gamest.moveHero(Direction.DOWN);
 		gamest.update();
 		assertEquals(false, gamest.getHero().isAlive());
+		assertEquals(' ', gamest.getHero().getSymbol());
 	}
 	@Test
 	public void testDragonDies(){
-		
 		GameState gamest=new GameState(m1,Dificulty.EASY);
 		gamest.moveHero(Direction.LEFT);
 		gamest.update();
@@ -71,7 +71,6 @@ public class TestGameWithStaticDragon {
 		gamest.moveHero(Direction.RIGHT);
 		gamest.update();
 		assertEquals(false,gamest.getDragons().get(0).isAlive());
-		
 	}
 	
 	@Test
@@ -99,15 +98,12 @@ public class TestGameWithStaticDragon {
 	}
 	
 	@Test
-	public void testHeroNotAbleToExit(){
+	public void testHeroNotAbleToExitIfNotTakeSword(){
 		GameState gamest=new GameState(m1,Dificulty.EASY);
-		gamest.moveHero(Direction.RIGHT);
-		gamest.update();
-		assertEquals(false,gamest.isFinished());
-		
+		assertEquals(false, gamest.heroMoveIsValid(Direction.RIGHT));
 	}
 	@Test
-	public void testHeroNotAbleToExitArmed(){
+	public void testHeroArmedNotAbleToExitIfNotKillDragon(){
 		GameState gamest=new GameState(m1,Dificulty.EASY);
 		gamest.moveHero(Direction.LEFT);
 		gamest.update();
@@ -125,7 +121,7 @@ public class TestGameWithStaticDragon {
 		gamest.update();
 		gamest.moveHero(Direction.RIGHT);
 		gamest.update();
-		assertEquals(false,gamest.isFinished());
+		assertEquals(false, gamest.heroMoveIsValid(Direction.RIGHT));
 	}
 	
 	@Test
@@ -141,7 +137,6 @@ public class TestGameWithStaticDragon {
 					break;
 				}
 		assertEquals(true,isEqual);
-		
 	}
 	
 	

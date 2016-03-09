@@ -12,7 +12,7 @@ public class AddingCharactersToMaze {
 	public char[][] getMazeWithCharacters(char[][] maze){
 		this.maze = maze;
 		dragonsPos = new ArrayList<Position>();
-		heroPos = creatPosition();
+		heroPos = creatPosition(); 
 		this.maze[heroPos.getX()][heroPos.getY()] = 'H';
 
 		swordPos = creatPosition();
@@ -27,7 +27,7 @@ public class AddingCharactersToMaze {
 		return maze;
 	}
 
-	public char[][] addDragonsInMaze(char[][] maze, int numDragons){
+	public char[][] addDragonsInMazeUntilNumDragons(char[][] maze, int numDragons){
 		this.maze = maze;
 		findCharactersThatExistsInMaze();
 		int numDragonsToAdd = numDragons - dragonsPos.size();

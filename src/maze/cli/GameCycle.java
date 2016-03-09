@@ -35,7 +35,7 @@ public class GameCycle {
 		int n = chooseBoardDimensions(s);
 		int numDragons = getNumberOfDragons(dificulty);
 		char[][] boardOfMaze = new MazeBuilder().buildMaze(n);
-		boardOfMaze = new AddingCharactersToMaze().addDragonsInMaze(boardOfMaze, numDragons);
+		boardOfMaze = new AddingCharactersToMaze().addDragonsInMazeUntilNumDragons(boardOfMaze, numDragons);
 		GameState gamest = new GameState(boardOfMaze, dificulty);
 		return gamest;
 	}

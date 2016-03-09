@@ -11,7 +11,7 @@ public class TestGameWithMobileAndAwakeDragon {
 			{'X', 'H', ' ', ' ', 'S'},
 			{'X', ' ', 'X', ' ', 'X'},
 			{'X', 'E', ' ', 'D', 'X'},
-			{'X', 'X', 'X', 'X', 'X'}};
+			{'X', 'X', 'X', 'X', 'X'}}; 
 	@Test
 	public void testRandomMoveOfDragon() {
 		GameState gamest = new GameState(m1, Dificulty.HARD);
