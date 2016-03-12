@@ -105,7 +105,7 @@ public class mazeGui {
 		frmJogoDoLabirinto.getContentPane().setLayout(null);
 
 		mazeSize = new JLabel("Dimens\u00E3o do labirinto");
-		mazeSize.setBounds(21, 22, 113, 14);
+		mazeSize.setBounds(21, 22, 142, 14);
 		frmJogoDoLabirinto.getContentPane().add(mazeSize);
 
 		dragonsNumber = new JLabel("N\u00FAmero de drag\u00F5es");
@@ -126,7 +126,7 @@ public class mazeGui {
 
 		comboBoxTypeOfDragons = new JComboBox<String>();
 		comboBoxTypeOfDragons.setModel(new DefaultComboBoxModel<String>(new String[] {"Est\u00E1ticos", "M\u00F3veis com adormecimento", "M\u00F3veis"}));
-		comboBoxTypeOfDragons.setBounds(162, 75, 200, 20);
+		comboBoxTypeOfDragons.setBounds(160, 69, 200, 20);
 		frmJogoDoLabirinto.getContentPane().add(comboBoxTypeOfDragons);
 
 		dragonType = new JLabel("Tipo de drag\u00F5es");
@@ -185,12 +185,12 @@ public class mazeGui {
 				System.exit(0);
 			}
 		});
-		btnFinishGame.setBounds(394, 74, 163, 23);
+		btnFinishGame.setBounds(394, 68, 163, 23);
 		frmJogoDoLabirinto.getContentPane().add(btnFinishGame);
 
 		textAreaStateMaze = new JTextArea();
 		textAreaStateMaze.setFont(new Font("Courier New", Font.PLAIN, 13));
-		textAreaStateMaze.setBounds(21, 118, 312, 225);
+		textAreaStateMaze.setBounds(21, 118, 339, 245);
 		frmJogoDoLabirinto.getContentPane().add(textAreaStateMaze);
 
 		btnUp = new JButton("Cima");
@@ -200,7 +200,7 @@ public class mazeGui {
 			}
 		});
 		btnUp.setEnabled(false);
-		btnUp.setBounds(395, 132, 89, 23);
+		btnUp.setBounds(424, 138, 89, 23);
 		frmJogoDoLabirinto.getContentPane().add(btnUp);
 
 		btnRight = new JButton("Direita");
@@ -210,7 +210,7 @@ public class mazeGui {
 			}
 		});
 		btnRight.setEnabled(false);
-		btnRight.setBounds(442, 172, 89, 23);
+		btnRight.setBounds(468, 172, 89, 23);
 		frmJogoDoLabirinto.getContentPane().add(btnRight);
 
 		btnLeft = new JButton("Esquerda");
@@ -220,7 +220,7 @@ public class mazeGui {
 			}
 		});
 		btnLeft.setEnabled(false);
-		btnLeft.setBounds(343, 172, 89, 23);
+		btnLeft.setBounds(369, 172, 89, 23);
 		frmJogoDoLabirinto.getContentPane().add(btnLeft);
 
 		btnDown = new JButton("Baixo");
@@ -230,7 +230,7 @@ public class mazeGui {
 			}
 		});
 		btnDown.setEnabled(false);
-		btnDown.setBounds(395, 206, 89, 23);
+		btnDown.setBounds(424, 207, 89, 23);
 		frmJogoDoLabirinto.getContentPane().add(btnDown);
 
 		atualStateOfProgram = new JLabel("Pode gerar novo labirinto!");

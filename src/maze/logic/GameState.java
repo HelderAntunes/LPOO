@@ -157,12 +157,11 @@ public class GameState {
 		Position dragonPos = dragon.getPosition();
 		Position oldPos = dragonPos.clone();
 		dragonPos.changePos(dir);
-		char square = maze.getSquare(dragonPos);
-		if(square == 'D' || square == 'd' || square == 'H' || square == 'X' 
-				|| square == 'S' || dragonPos.equals(oldPos))
-			return true;
-		else
+		char newSquare = maze.getSquare(dragonPos);
+		if(newSquare == ' ' || dragonPos.equals(oldPos))
 			return false;
+		else
+			return true;
 	}
 
 	private boolean isGameFinished(){
