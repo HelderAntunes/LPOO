@@ -73,7 +73,7 @@ public class GameState {
 
 		if(isGameFinished())
 			isFinished = true;
-			
+
 	}
 
 	private void killDragonsOrHeroIfNecessary(){
@@ -152,9 +152,11 @@ public class GameState {
 
 	private boolean dragonMoveIsInvalid(Dragon dragon, Direction dir){
 		Position dragonPos = dragon.getPosition();
+		Position oldPos = dragonPos.clone();
 		dragonPos.changePos(dir);
 		char square = maze.getSquare(dragonPos);
-		if(square == 'D' || square == 'd' || square == 'H' || square == 'X' || square == 'S')
+		if(square == 'D' || square == 'd' || square == 'H' || square == 'X' 
+				|| square == 'S' || dragonPos.equals(oldPos))
 			return true;
 		else
 			return false;
@@ -170,11 +172,11 @@ public class GameState {
 	public Hero getHero(){
 		return hero;
 	}
-	
+
 	public ArrayList<Dragon> getDragons(){
 		return dragons;
 	}
-	
+
 	public Sword getSword(){
 		return sword;
 	}
@@ -232,6 +234,18 @@ public class GameState {
 			if(!dragon.isAlive())
 				return true;
 		return false;
+	}
+
+	public String toString(){
+		String s = "";
+		char [][] gameBoard = getGameBoard();
+		for(int i=0;i<gameBoard.length;i++)
+			for(int j=0;j<gameBoard.length;j++)
+				if(j==gameBoard.length-1)
+					s = s + gameBoard[i][j] + "\n";
+				else 
+					s = s + gameBoard[i][j] + " ";
+		return s;
 	}
 }
 

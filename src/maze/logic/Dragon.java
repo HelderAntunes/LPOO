@@ -29,11 +29,11 @@ public class Dragon extends CharacterOfGame{
 	}
 
 	public void sleeps(){
-		isSleeping=true;
+		isSleeping = true;
 	}
 
 	public void wakeUp(){
-		isSleeping=false;
+		isSleeping = false;
 	}
 
 	public boolean isSleeping(){
