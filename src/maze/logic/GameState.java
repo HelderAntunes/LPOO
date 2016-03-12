@@ -114,11 +114,14 @@ public class GameState {
 	private void updateSleepingOfDragons(){
 		Random r = new Random();
 		for(Dragon dragon: dragons){
-			int isSleeping = r.nextInt(3);
-			if(isSleeping == 0)
-				dragon.sleeps();
-			else
-				dragon.wakeUp();
+			if(dragon.isAlive()){
+				int isSleeping = r.nextInt(3);
+				if(isSleeping == 0)
+					dragon.sleeps();
+				else
+					dragon.wakeUp();
+				maze.setSquare(dragon.getPosition(), dragon.getSymbol());
+			}
 		}
 	}
 
