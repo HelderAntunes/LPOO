@@ -136,23 +136,57 @@ public class mazeGui {
 		btnGenerateMaze = new JButton("Gerar novo labirinto");
 		btnGenerateMaze.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Dificulty dificulty = chooseDificulty();
-				int n = chooseBoardDimensions();
-				int numDragons = getNumberOfDragons();
-				char[][] boardOfMaze = new MazeBuilder().buildMaze(n);
-				boardOfMaze = new AddingCharactersToMaze().addDragonsInMazeUntilNumDragons(boardOfMaze, numDragons);
-				gamest = new GameState(boardOfMaze, dificulty);
-				textAreaStateMaze.setText(gamest.toString());
-				enableButtons();
-				atualStateOfProgram.setText("Pode jogar!");
+				try{
+					Dificulty dificulty = chooseDificulty();
+					int n = chooseBoardDimensions();
+					int numDragons = getNumberOfDragons();
+					char[][] boardOfMaze = new MazeBuilder().buildMaze(n);
+					boardOfMaze = new AddingCharactersToMaze().addDragonsInMazeUntilNumDragons(boardOfMaze, numDragons);
+					gamest = new GameState(boardOfMaze, dificulty);
+					textAreaStateMaze.setText(gamest.toString());
+					enableButtons();
+					atualStateOfProgram.setText("Pode jogar!");
+				}
+				catch(InvalidNumberOfDragons ind){
+					atualStateOfProgram.setText(ind.getMessage());
+				}
+				catch(InvalidBoardDimensions ibd){
+					atualStateOfProgram.setText(ibd.getMessage());
+				}
 			}
 
-			public int getNumberOfDragons(){
-				return Integer.parseInt(fldNumberOfDragons.getText());
+			public int getNumberOfDragons() throws InvalidNumberOfDragons{
+				String text = fldNumberOfDragons.getText();
+				if(isNumeric(text)){
+					int nDragons = Integer.parseInt(text);  
+					if(nDragons >= 1)
+						return nDragons;
+					else
+						throw new InvalidNumberOfDragons("Numero de dragoes invalido.");
+				}
+				throw new InvalidNumberOfDragons("Introduza um número em Numero de dragoes.");
 			}
 
-			public int chooseBoardDimensions(){
-				return Integer.parseInt(fldMazeSize.getText());
+			public int chooseBoardDimensions() throws InvalidBoardDimensions{
+				String text = fldMazeSize.getText();
+				if(isNumeric(text)){
+					int boardDimensions = Integer.parseInt(text);  
+					if(boardDimensions >= 5 && boardDimensions%2 != 0)
+						return boardDimensions;
+					else
+						throw new InvalidBoardDimensions("Dimensao do tabuleiro invalida.");
+				}
+				throw new InvalidBoardDimensions("Introduza um número em dimensao do tabuleiro.");
+			}
+			
+			public boolean isNumeric(String str)  {  
+			  try  {  
+			    Integer.parseInt(str);  
+			  }  
+			  catch(NumberFormatException nfe)  {  
+			    return false;  
+			  }  
+			  return true;  
 			}
 
 			public Dificulty chooseDificulty(){
