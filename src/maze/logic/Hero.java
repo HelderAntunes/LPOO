@@ -9,6 +9,7 @@ public class Hero extends CharacterOfGame{
 	/**
 	 * Constructor of Hero.
 	 * @param pos initial position of hero.
+	 * Sets isArmed to false(initialy the hero is disarmed)
 	 */
 	public Hero(Position pos){
 		super(pos);

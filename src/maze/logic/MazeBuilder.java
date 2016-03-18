@@ -3,8 +3,10 @@ package maze.logic;
 import java.util.Stack;
 import java.util.Random;
 import maze.logic.Position.Direction;
-
-
+/**
+ * Represents the builder of a random Maze
+ *
+ */
 public class MazeBuilder implements IMazeBuilder{
 
 	private char[][] maze;
@@ -14,6 +16,9 @@ public class MazeBuilder implements IMazeBuilder{
 	private int rowAtualPos;
 	private int columnAtualPos;
 
+	/**
+	 * Builds a random maze and places one dragon and the rest of the elements of the maze
+	 */
 	public char[][] buildMaze(int n) {
 		this.n = n;
 
@@ -44,7 +49,12 @@ public class MazeBuilder implements IMazeBuilder{
 		maze[rowAtualPos][columnAtualPos] = ' ';
 		return new AddingCharactersToMaze().getMazeWithCharacters(maze); // add one dragon
 	}
-
+/**
+ *
+ * @param oldPos older position .
+ * @param newPos new position.
+ * @return a new direction
+ */
 	private Direction getNewDir(Position oldPos, Position newPos){
 		Direction newDir = null;
 		if(oldPos.getY() == newPos.getY()+1)
@@ -57,7 +67,10 @@ public class MazeBuilder implements IMazeBuilder{
 			newDir = Direction.DOWN;
 		return newDir;
 	}
-
+	/**
+	 * 
+	 * @return true if the four possible cells have been visited and false if there is at least one that is not visited yet
+	 */
 	private boolean allNeighborsCellsHasBeenVisited(){
 		int rowVisCell = rowAtualPos/2;
 		int colVisCell = columnAtualPos/2;
@@ -72,7 +85,10 @@ public class MazeBuilder implements IMazeBuilder{
 			return false;
 		return true;
 	}
-
+	/**
+	 * Updates the construction of the maze.
+	 * @param dir direction
+	 */
 	private void updateMaze(Direction dir){
 		int rowVisCell = rowAtualPos/2;
 		int colVisCell = columnAtualPos/2;
@@ -107,7 +123,11 @@ public class MazeBuilder implements IMazeBuilder{
 		}
 		pathHistory.push(new Position(rowAtualPos/2,columnAtualPos/2));
 	}
-
+	/**
+	 * 
+	 * @param dir direction.
+	 * @return true if there is at least one cell not visited, so that direction is valid
+	 */
 	private boolean directionIsValid(Direction dir){
 		int r = rowAtualPos/2;
 		int c = columnAtualPos/2;
@@ -133,14 +153,21 @@ public class MazeBuilder implements IMazeBuilder{
 		}
 		return false;
 	}
-
+	/**
+	 * 
+	 * @param pos position.
+	 * @return true if the position was not visited yet
+	 */
 	private boolean positonIsNotBeVisited(Position pos){
 		if(visitedCells[pos.getX()][pos.getY()] != '+')
 			return true;
 		else
 			return false;
 	}
-
+	/**
+	 * 
+	 * @return a random direction
+	 */
 	private Direction getRandomDirection(){
 		Random r = new Random();
 		int d = r.nextInt(4);
@@ -164,7 +191,9 @@ public class MazeBuilder implements IMazeBuilder{
 		}
 		return dir;
 	}
-
+	/**
+	 * initializes a maze
+	 */
 	private void initLab(){
 		maze = new char[n][n];
 		for(int i = 0;i < n;i++)
@@ -177,7 +206,9 @@ public class MazeBuilder implements IMazeBuilder{
 			for(int i = 0;i < n;i++)
 				maze[i][j] = 'X';
 	}
-
+	/**
+	 * Initializes the actual position.
+	 */
 	private void initAtualPos(){
 		Random r = new Random();
 		rowAtualPos = r.nextInt(n-1);
@@ -198,7 +229,9 @@ public class MazeBuilder implements IMazeBuilder{
 		}
 		maze[rowAtualPos][columnAtualPos] = '+';
 	}
-
+	/**
+	 * Defines the exit position of the maze.
+	 */
 	private void defineExitPos(){
 		Random r = new Random();
 		boolean sucess = false;
@@ -235,7 +268,9 @@ public class MazeBuilder implements IMazeBuilder{
 			}
 		}while(!sucess);
 	}
-
+	/**
+	 * Initializes the visited cells.
+	 */
 	private void initVisitedCells(){
 		visitedCells = new char[(n-1)/2][(n-1)/2];
 		for(int i = 0;i < visitedCells.length;i++)

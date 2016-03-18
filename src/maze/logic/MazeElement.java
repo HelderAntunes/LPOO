@@ -17,7 +17,7 @@ public class MazeElement {
 	}
 	
 	/**
-	 * @return the atual position of element
+	 * @return the copy of the atual position of element
 	 */
 	public Position getPosition(){
 		return position.clone();

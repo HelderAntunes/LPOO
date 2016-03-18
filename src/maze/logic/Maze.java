@@ -21,7 +21,12 @@ public class Maze {
 		this.board = board;
 		
 	}
-	
+	/**
+	 * Set a position of the maze with a character
+	 * @param pos position
+	 * @param c character
+	 * 
+	 */
 	public void setSquare(Position pos, char c){
 		board[pos.getX()][pos.getY()] = c;
 	}
@@ -48,7 +53,7 @@ public class Maze {
 	}
 	
 	/**
-	 * Returns the position of exit of maze.
+	 * @return the copy of the maze exit position.
 	 */
 	public Position getExitPos(){
 		return exitPos.clone();

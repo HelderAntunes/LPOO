@@ -75,7 +75,9 @@ public class GameState {
 			isFinished = true;
 
 	}
-
+	/**
+	 * Kills the a dragon if he is near to the armed hero, ou kills the hero if the hero is disarmed.
+	 */
 	private void killDragonsOrHeroIfNecessary(){
 		for(Dragon dragon: dragons)
 			if(heroIsNearToTheDragon(dragon) && dragon.isAlive())
@@ -110,7 +112,9 @@ public class GameState {
 		if(hero.getPosition().equals(sword.getPosition())) return true;
 		else return false;
 	}
-
+	/**
+	 * Updates the state of a dragon(sleep or wakeup).
+	 */
 	private void updateSleepingOfDragons(){
 		Random r = new Random();
 		for(Dragon dragon: dragons){
@@ -124,7 +128,12 @@ public class GameState {
 			}
 		}
 	}
-
+/**
+ * 
+ * @param dragon.
+ * Generates a random movement of the dragon.
+ * 
+ */
 	private void generateDragonNewMove(Dragon dragon){
 		Random r = new Random();
 		int move;
@@ -152,7 +161,12 @@ public class GameState {
 		dragon.move(dir);
 		maze.setSquare(dragon.getPosition(), dragon.getSymbol());
 	}
-
+/**
+ * 
+ * @param dragon.
+ * @param dir.
+ * @return false if the movement is valid,or true if invalid
+ */
 	private boolean dragonMoveIsInvalid(Dragon dragon, Direction dir){
 		Position dragonPos = dragon.getPosition();
 		Position oldPos = dragonPos.clone();
@@ -163,22 +177,34 @@ public class GameState {
 		else
 			return true;
 	}
-
+	/**
+	 * 
+	 * @return true if the game is finished or false if not
+	 */
 	private boolean isGameFinished(){
 		if((aDragonWasKilled() && hero.getPosition().equals(maze.getExitPos()))
 				|| !hero.isAlive())
 			return true;
 		return false;
 	}
-
+	/**
+	 * 
+	 * @return the hero
+	 */
 	public Hero getHero(){
 		return hero;
 	}
-
+	/**
+	 * 
+	 * @return an ArrayList that conteins the dragons
+	 */
 	public ArrayList<Dragon> getDragons(){
 		return dragons;
 	}
-
+/**
+ * 
+ * @return the sword
+ */
 	public Sword getSword(){
 		return sword;
 	}
@@ -230,14 +256,19 @@ public class GameState {
 		else
 			return true;
 	}
-
+	/**
+	 * 
+	 * @return true if the dragon is dead or false if is still alive
+	 */
 	private boolean aDragonWasKilled(){
 		for(Dragon dragon: dragons)
 			if(!dragon.isAlive())
 				return true;
 		return false;
 	}
-
+	/**
+	 * returns the maze as a string.
+	 */
 	public String toString(){
 		String s = "";
 		char [][] gameBoard = getGameBoard();

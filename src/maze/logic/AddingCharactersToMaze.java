@@ -2,13 +2,22 @@ package maze.logic;
 
 import java.util.Random;
 import java.util.ArrayList;
-
+/**
+ * 
+ * The class is responsible for adding characters to the maze.
+ *
+ */
 public class AddingCharactersToMaze {
 	char[][] maze;
 	Position heroPos;
 	ArrayList<Position> dragonsPos;
 	Position swordPos;
-
+	
+	/**
+	 * 
+	 * @param maze
+	 * @return maze with the characters
+	 */
 	public char[][] getMazeWithCharacters(char[][] maze){
 		this.maze = maze;
 		dragonsPos = new ArrayList<Position>();
@@ -26,7 +35,12 @@ public class AddingCharactersToMaze {
 
 		return maze;
 	}
-
+	/**
+	 * 
+	 * @param maze.
+	 * @param numDragons number of dragons.
+	 * @return maze with the number of dragons intended.
+	 */
 	public char[][] addDragonsInMazeUntilNumDragons(char[][] maze, int numDragons){
 		this.maze = maze;
 		findCharactersThatExistsInMaze();
@@ -54,6 +68,9 @@ public class AddingCharactersToMaze {
 		return maze;
 	}
 	
+	/**
+	 * Gets the position of the elements of the game.
+	 */
 	private void findCharactersThatExistsInMaze(){
 		dragonsPos = new ArrayList<Position>();
 		for(int i = 1;i < maze.length-1;i++)
@@ -65,7 +82,10 @@ public class AddingCharactersToMaze {
 				else if(maze[i][j] == 'D' || maze[i][j] == 'd')
 					dragonsPos.add(new Position(i, j));
 	}
-
+	/**
+	 * 
+	 * @return a random position
+	 */
 	private Position creatPosition(){
 		Position pos = null;
 		do{
@@ -73,12 +93,19 @@ public class AddingCharactersToMaze {
 		}while(pos == null || positionIsInvalid(pos));
 		return pos;
 	}
-
+	/**
+	 * 
+	 * @param pos
+	 * @return true if in that position is some element,or false if the cell is empty
+	 */
 	private boolean positionIsInvalid(Position pos){
 		if(maze[pos.getX()][pos.getY()] != ' ') return true;
 		else return false;
 	}
-
+	/**
+	 * 
+	 * @return a random position
+	 */
 	private Position generateRandomPosition(){
 		Random r = new Random();
 		int row = r.nextInt(maze.length-2)+1;
