@@ -128,12 +128,12 @@ public class GameState {
 			}
 		}
 	}
-/**
- * 
- * @param dragon.
- * Generates a random movement of the dragon.
- * 
- */
+	/**
+	 * 
+	 * @param dragon.
+	 * Generates a random movement of the dragon.
+	 * 
+	 */
 	private void generateDragonNewMove(Dragon dragon){
 		Random r = new Random();
 		int move;
@@ -161,12 +161,12 @@ public class GameState {
 		dragon.move(dir);
 		maze.setSquare(dragon.getPosition(), dragon.getSymbol());
 	}
-/**
- * 
- * @param dragon.
- * @param dir.
- * @return false if the movement is valid,or true if invalid
- */
+	/**
+	 * 
+	 * @param dragon.
+	 * @param dir.
+	 * @return false if the movement is valid,or true if invalid
+	 */
 	private boolean dragonMoveIsInvalid(Dragon dragon, Direction dir){
 		Position dragonPos = dragon.getPosition();
 		Position oldPos = dragonPos.clone();
@@ -196,15 +196,15 @@ public class GameState {
 	}
 	/**
 	 * 
-	 * @return an ArrayList that conteins the dragons
+	 * @return an ArrayList that contains the dragons
 	 */
 	public ArrayList<Dragon> getDragons(){
 		return dragons;
 	}
-/**
- * 
- * @return the sword
- */
+	/**
+	 * 
+	 * @return the sword
+	 */
 	public Sword getSword(){
 		return sword;
 	}

@@ -19,7 +19,7 @@ import java.awt.event.ActionEvent;
 
 
 
-public class mazeGui {
+public class MazeGui {
 
 	private JFrame frmJogoDoLabirinto;
 	private JTextField fldMazeSize;
@@ -27,16 +27,16 @@ public class mazeGui {
 	private JComboBox<String> comboBoxTypeOfDragons;
 	private JLabel dragonType;
 
-	JLabel mazeSize;
-	JLabel dragonsNumber;
-	JButton btnGenerateMaze;
-	JButton btnFinishGame;
-	JTextArea textAreaStateMaze;
-	JButton btnUp;
-	JButton btnRight;
-	JButton btnLeft;
-	JButton btnDown;
-	JLabel atualStateOfProgram;
+	private JLabel mazeSize;
+	private JLabel dragonsNumber;
+	private JButton btnGenerateMaze;
+	private JButton btnFinishGame;
+	private JTextArea textAreaStateMaze;
+	private JButton btnUp;
+	private JButton btnRight;
+	private JButton btnLeft;
+	private JButton btnDown;
+	private JLabel atualStateOfProgram;
 
 	private GameState gamest;
 
@@ -47,7 +47,7 @@ public class mazeGui {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					mazeGui window = new mazeGui();
+					MazeGui window = new MazeGui();
 					window.frmJogoDoLabirinto.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -59,7 +59,7 @@ public class mazeGui {
 	/**
 	 * Create the application.
 	 */
-	public mazeGui() {
+	public MazeGui() {
 		initialize();
 	}
 
@@ -143,9 +143,10 @@ public class mazeGui {
 					char[][] boardOfMaze = new MazeBuilder().buildMaze(n);
 					boardOfMaze = new AddingCharactersToMaze().addDragonsInMazeUntilNumDragons(boardOfMaze, numDragons);
 					gamest = new GameState(boardOfMaze, dificulty);
-					textAreaStateMaze.setText(gamest.toString());
+					new GameGraphicMaze(gamest);
+					/*textAreaStateMaze.setText(gamest.toString());
 					enableButtons();
-					atualStateOfProgram.setText("Pode jogar!");
+					atualStateOfProgram.setText("Pode jogar!");*/
 				}
 				catch(InvalidNumberOfDragons ind){
 					atualStateOfProgram.setText(ind.getMessage());
@@ -210,6 +211,7 @@ public class mazeGui {
 				btnDown.setEnabled(true);
 			}
 		});
+		
 		btnGenerateMaze.setBounds(394, 18, 163, 23);
 		frmJogoDoLabirinto.getContentPane().add(btnGenerateMaze);
 
