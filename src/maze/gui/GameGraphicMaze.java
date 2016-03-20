@@ -19,13 +19,13 @@ import maze.logic.Position.Direction;
 @SuppressWarnings("serial")
 public class GameGraphicMaze extends JPanel 
 implements MouseListener, MouseMotionListener, KeyListener {
-	
+
 	private JFrame frameGame;
-	JLabel atualStateOfProgram;
-	
+
 	// Coordinates of the bounding rectangle for drawing the image
 	private int x = 0, y = 0;
-	private int withSquare = 35;
+	private int withSquare;
+	private int heightSquare;
 
 	// in-memory representation of images of elements of game
 	private BufferedImage hero;
@@ -35,20 +35,22 @@ implements MouseListener, MouseMotionListener, KeyListener {
 	private BufferedImage pathWithNoElements;
 	private BufferedImage wall;
 	private GameState gamest;
-	
+
 	public GameGraphicMaze(GameState gamest) {
-		setBounds(0, 0, 794, 487);
+		setBounds(0, 0, 594, 571);
 		frameGame = new JFrame("Maze Game");
 		frameGame.setResizable(false);
 		frameGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
-		frameGame.setPreferredSize(new Dimension(500, 500));
+		frameGame.setPreferredSize(new Dimension(600, 600));
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 		this.addKeyListener(this);
 		setLayout(null);
 
-		this.gamest = gamest;
 
+		this.gamest = gamest;
+		withSquare = this.getWidth()/gamest.getGameBoard().length;
+		heightSquare = this.getHeight()/gamest.getGameBoard().length;
 		try {
 			hero =  ImageIO.read(new File("images/hero.jpg"));
 			dragon =  ImageIO.read(new File("images/dragon.jpg"));
@@ -61,10 +63,6 @@ implements MouseListener, MouseMotionListener, KeyListener {
 		}
 		frameGame.getContentPane().setLayout(null);
 		frameGame.getContentPane().add(this);
-
-		atualStateOfProgram = new JLabel("Pode jogar!!!");
-		atualStateOfProgram.setBounds(10, 442, 281, 14);
-		add(atualStateOfProgram);
 		frameGame.pack(); 
 		frameGame.setVisible(true);
 		requestFocus();
@@ -74,58 +72,44 @@ implements MouseListener, MouseMotionListener, KeyListener {
 		super.paintComponent(g); 
 		char[][] gameBoard = gamest.getGameBoard();
 		x = y = 0;
-		for(int i = 0;i < gameBoard.length;i++)
-			for(int j = 0;j < gameBoard.length;j++)
-				if(j == gameBoard.length-1){
-					x = 0;
-					y += withSquare;
-				}
-				else{
-					char c = gameBoard[i][j];
-					if(c == 'H')
-						drawElementOfGame(g, hero);
-					else if(c == 'A')
-						drawElementOfGame(g, hero);
-					else if(c == 'D')
-						drawElementOfGame(g, dragon);
-					else if(c == 'd')
-						drawElementOfGame(g, dragon);
-					else if(c == 'E')
-						drawElementOfGame(g, sword);
-					else if(c == 'F')
-						drawElementOfGame(g, dragon);
-					else if(c == 'S')
-						drawElementOfGame(g, exit);
-					else if(c == ' ')
-						drawElementOfGame(g, pathWithNoElements);
-					else if(c == 'X')
-						drawElementOfGame(g, wall);
-					x += withSquare;
-				}
+		for(int i = 0;i < gameBoard.length;i++){
+			for(int j = 0;j < gameBoard.length;j++){
+				char c = gameBoard[i][j];
+				if(c == 'H')
+					drawElementOfGame(g, hero);
+				else if(c == 'A')
+					drawElementOfGame(g, hero);
+				else if(c == 'D')
+					drawElementOfGame(g, dragon);
+				else if(c == 'd')
+					drawElementOfGame(g, dragon);
+				else if(c == 'E')
+					drawElementOfGame(g, sword);
+				else if(c == 'F')
+					drawElementOfGame(g, dragon);
+				else if(c == 'S')
+					drawElementOfGame(g, exit);
+				else if(c == ' ')
+					drawElementOfGame(g, pathWithNoElements);
+				else if(c == 'X')
+					drawElementOfGame(g, wall);
+				x += withSquare;
+
+			}
+			x = 0;
+			y += heightSquare;
+		}
 	}
 
 	private void drawElementOfGame(Graphics g, BufferedImage elementImage){
-		g.drawImage(elementImage, x, y, x + withSquare - 1, y + withSquare - 1, 0, 0, elementImage.getWidth(), elementImage.getHeight(), null);
+		g.drawImage(elementImage, x, y, x + withSquare - 1, y + heightSquare - 1, 0, 0, elementImage.getWidth(), elementImage.getHeight(), null);
 	}
 
 	private void playGameRound(Direction dirMovimentHero){		
 		if(gamest.heroMoveIsValid(dirMovimentHero)){
 			gamest.moveHero(dirMovimentHero);
 			gamest.update();
-
-			if(gamest.isFinished()){
-				if(gamest.getHero().isAlive())
-					atualStateOfProgram.setText("Jogo terminou. O heroi consegui escapar:)");
-				else
-					atualStateOfProgram.setText("Jogo terminou. O herói morreu :(");				
-			}
-			else
-				atualStateOfProgram.setText("Pode jogar!");
-
 		}
-		else
-			atualStateOfProgram.setText("Movimentação inválida! Tente de novo...");
-
 		repaint();
 	}
 
@@ -163,17 +147,4 @@ implements MouseListener, MouseMotionListener, KeyListener {
 	// Ignored keyboard events
 	public void keyReleased(KeyEvent e) {}
 	public void keyTyped(KeyEvent e) {}
-
-	// Main program.
-	// Creates a frame containing the panel
-	public static void main(String[] args) {
-		JFrame f = new JFrame("Maze Game");
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
-		f.setPreferredSize(new Dimension(500, 500));
-		/*JPanel panel = new GameGraphicMaze();
-		f.getContentPane().add(panel);
-		f.pack(); 
-		f.setVisible(true);
-		panel.requestFocus(); // to receive keyboard events    */   
-	}
 }
