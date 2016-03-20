@@ -36,7 +36,7 @@ implements MouseListener, MouseMotionListener, KeyListener {
 		setBounds(0, 0, 594, 571);
 		frameGame = new JFrame("Maze Game");
 		frameGame.setResizable(false);
-		frameGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
+		frameGame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);		
 		frameGame.setPreferredSize(new Dimension(600, 600));		
 		frameGame.getContentPane().setLayout(null);
 		frameGame.getContentPane().add(this);
