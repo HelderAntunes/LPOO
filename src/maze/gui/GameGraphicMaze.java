@@ -11,11 +11,6 @@ import javax.swing.*;
 import maze.logic.GameState;
 import maze.logic.Position.Direction;
 
-/**
- * LPOO 2015/16.
- * This examples demonstrates how to draw images, handle keyboard events, handle mouse events,
- * and implement simple animations with timers.
- */
 @SuppressWarnings("serial")
 public class GameGraphicMaze extends JPanel 
 implements MouseListener, MouseMotionListener, KeyListener {
@@ -34,6 +29,7 @@ implements MouseListener, MouseMotionListener, KeyListener {
 	private BufferedImage exit;
 	private BufferedImage pathWithNoElements;
 	private BufferedImage wall;
+	
 	private GameState gamest;
 
 	public GameGraphicMaze(GameState gamest) {
@@ -41,12 +37,15 @@ implements MouseListener, MouseMotionListener, KeyListener {
 		frameGame = new JFrame("Maze Game");
 		frameGame.setResizable(false);
 		frameGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
-		frameGame.setPreferredSize(new Dimension(600, 600));
+		frameGame.setPreferredSize(new Dimension(600, 600));		
+		frameGame.getContentPane().setLayout(null);
+		frameGame.getContentPane().add(this);
+		frameGame.pack(); 
+		frameGame.setVisible(true);
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 		this.addKeyListener(this);
 		setLayout(null);
-
 
 		this.gamest = gamest;
 		withSquare = this.getWidth()/gamest.getGameBoard().length;
@@ -61,10 +60,7 @@ implements MouseListener, MouseMotionListener, KeyListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		frameGame.getContentPane().setLayout(null);
-		frameGame.getContentPane().add(this);
-		frameGame.pack(); 
-		frameGame.setVisible(true);
+
 		requestFocus();
 	}
 
@@ -121,7 +117,11 @@ implements MouseListener, MouseMotionListener, KeyListener {
 	public void mouseClicked(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
-
+	
+	// Ignored keyboard events
+	public void keyReleased(KeyEvent e) {}
+	public void keyTyped(KeyEvent e) {}
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(gamest.isFinished() == false){
@@ -143,8 +143,4 @@ implements MouseListener, MouseMotionListener, KeyListener {
 			}	
 		}
 	}
-
-	// Ignored keyboard events
-	public void keyReleased(KeyEvent e) {}
-	public void keyTyped(KeyEvent e) {}
 }

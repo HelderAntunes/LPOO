@@ -31,11 +31,6 @@ public class MazeGui {
 	private JLabel dragonsNumber;
 	private JButton btnGenerateMaze;
 	private JButton btnFinishGame;
-	private JTextArea textAreaStateMaze;
-	private JButton btnUp;
-	private JButton btnRight;
-	private JButton btnLeft;
-	private JButton btnDown;
 	private JLabel atualStateOfProgram;
 
 	private GameState gamest;
@@ -63,36 +58,6 @@ public class MazeGui {
 		initialize();
 	}
 
-
-	private void playGameRound(Direction dirMovimentHero){		
-		if(gamest.heroMoveIsValid(dirMovimentHero)){
-			gamest.moveHero(dirMovimentHero);
-			gamest.update();
-			
-			if(gamest.isFinished()){
-				disableButtons();
-				if(gamest.getHero().isAlive())
-					atualStateOfProgram.setText("Jogo terminou. O heroi consegui escapar:)");
-				else
-					atualStateOfProgram.setText("Jogo terminou. O herói morreu :(");				
-			}
-			else
-				atualStateOfProgram.setText("Pode jogar!");
-
-		}
-		else
-			atualStateOfProgram.setText("Movimentação inválida! Tente de novo...");
-
-		textAreaStateMaze.setText(gamest.toString());
-	}
-
-	public void disableButtons(){
-		btnUp.setEnabled(false);
-		btnRight.setEnabled(false);
-		btnLeft.setEnabled(false);
-		btnDown.setEnabled(false);
-	}
-
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -100,7 +65,7 @@ public class MazeGui {
 		frmJogoDoLabirinto = new JFrame();
 		frmJogoDoLabirinto.setResizable(false);
 		frmJogoDoLabirinto.setTitle("Jogo do labirinto");
-		frmJogoDoLabirinto.setBounds(100, 100, 573, 427);
+		frmJogoDoLabirinto.setBounds(100, 100, 573, 152);
 		frmJogoDoLabirinto.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmJogoDoLabirinto.getContentPane().setLayout(null);
 
@@ -144,9 +109,6 @@ public class MazeGui {
 					boardOfMaze = new AddingCharactersToMaze().addDragonsInMazeUntilNumDragons(boardOfMaze, numDragons);
 					gamest = new GameState(boardOfMaze, dificulty);
 					new GameGraphicMaze(gamest);
-					/*textAreaStateMaze.setText(gamest.toString());
-					enableButtons();
-					atualStateOfProgram.setText("Pode jogar!");*/
 				}
 				catch(InvalidNumberOfDragons ind){
 					atualStateOfProgram.setText(ind.getMessage());
@@ -155,63 +117,7 @@ public class MazeGui {
 					atualStateOfProgram.setText(ibd.getMessage());
 				}
 			}
-
-			public int getNumberOfDragons() throws InvalidNumberOfDragons{
-				String text = fldNumberOfDragons.getText();
-				if(isNumeric(text)){
-					int nDragons = Integer.parseInt(text);  
-					if(nDragons >= 1)
-						return nDragons;
-					else
-						throw new InvalidNumberOfDragons("Numero de dragoes invalido.");
-				}
-				throw new InvalidNumberOfDragons("Introduza um número em Numero de dragoes.");
-			}
-
-			public int chooseBoardDimensions() throws InvalidBoardDimensions{
-				String text = fldMazeSize.getText();
-				if(isNumeric(text)){
-					int boardDimensions = Integer.parseInt(text);  
-					if(boardDimensions >= 5 && boardDimensions%2 != 0)
-						return boardDimensions;
-					else
-						throw new InvalidBoardDimensions("Dimensao do tabuleiro invalida.");
-				}
-				throw new InvalidBoardDimensions("Introduza um número em dimensao do tabuleiro.");
-			}
-			
-			public boolean isNumeric(String str)  {  
-			  try  {  
-			    Integer.parseInt(str);  
-			  }  
-			  catch(NumberFormatException nfe)  {  
-			    return false;  
-			  }  
-			  return true;  
-			}
-
-			public Dificulty chooseDificulty(){
-				int indexSelected = comboBoxTypeOfDragons.getSelectedIndex();
-				switch(indexSelected){
-				case 0:
-					return Dificulty.EASY;
-				case 1:
-					return Dificulty.MEDIUM;
-				case 2:
-					return Dificulty.HARD;
-				default:
-					return Dificulty.EASY;
-				}
-			}
-
-			public void enableButtons(){
-				btnUp.setEnabled(true);
-				btnRight.setEnabled(true);
-				btnLeft.setEnabled(true);
-				btnDown.setEnabled(true);
-			}
 		});
-		
 		btnGenerateMaze.setBounds(394, 18, 163, 23);
 		frmJogoDoLabirinto.getContentPane().add(btnGenerateMaze);
 
@@ -224,53 +130,56 @@ public class MazeGui {
 		btnFinishGame.setBounds(394, 68, 163, 23);
 		frmJogoDoLabirinto.getContentPane().add(btnFinishGame);
 
-		textAreaStateMaze = new JTextArea();
-		textAreaStateMaze.setFont(new Font("Courier New", Font.PLAIN, 13));
-		textAreaStateMaze.setBounds(21, 118, 339, 245);
-		frmJogoDoLabirinto.getContentPane().add(textAreaStateMaze);
-
-		btnUp = new JButton("Cima");
-		btnUp.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				playGameRound(Direction.UP);
-			}
-		});
-		btnUp.setEnabled(false);
-		btnUp.setBounds(424, 138, 89, 23);
-		frmJogoDoLabirinto.getContentPane().add(btnUp);
-
-		btnRight = new JButton("Direita");
-		btnRight.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				playGameRound(Direction.RIGHT);
-			}
-		});
-		btnRight.setEnabled(false);
-		btnRight.setBounds(468, 172, 89, 23);
-		frmJogoDoLabirinto.getContentPane().add(btnRight);
-
-		btnLeft = new JButton("Esquerda");
-		btnLeft.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				playGameRound(Direction.LEFT);
-			}
-		});
-		btnLeft.setEnabled(false);
-		btnLeft.setBounds(369, 172, 89, 23);
-		frmJogoDoLabirinto.getContentPane().add(btnLeft);
-
-		btnDown = new JButton("Baixo");
-		btnDown.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				playGameRound(Direction.DOWN);
-			}
-		});
-		btnDown.setEnabled(false);
-		btnDown.setBounds(424, 207, 89, 23);
-		frmJogoDoLabirinto.getContentPane().add(btnDown);
-
 		atualStateOfProgram = new JLabel("Pode gerar novo labirinto!");
-		atualStateOfProgram.setBounds(20, 374, 364, 14);
+		atualStateOfProgram.setBounds(21, 100, 364, 14);
 		frmJogoDoLabirinto.getContentPane().add(atualStateOfProgram);
+	}	
+	
+	public Dificulty chooseDificulty(){
+		int indexSelected = comboBoxTypeOfDragons.getSelectedIndex();
+		switch(indexSelected){
+		case 0:
+			return Dificulty.EASY;
+		case 1:
+			return Dificulty.MEDIUM;
+		case 2:
+			return Dificulty.HARD;
+		default:
+			return Dificulty.EASY;
+		}
+	}
+	
+	public boolean isNumeric(String str)  {  
+		try  {  
+			Integer.parseInt(str);  
+		}  
+		catch(NumberFormatException nfe)  {  
+			return false;  
+		}  
+		return true;  
+	}
+	
+	public int chooseBoardDimensions() throws InvalidBoardDimensions{
+		String text = fldMazeSize.getText();
+		if(isNumeric(text)){
+			int boardDimensions = Integer.parseInt(text);  
+			if(boardDimensions >= 5 && boardDimensions%2 != 0)
+				return boardDimensions;
+			else
+				throw new InvalidBoardDimensions("Dimensao do tabuleiro invalida.");
+		}
+		throw new InvalidBoardDimensions("Introduza um número em dimensao do tabuleiro.");
+	}
+	
+	public int getNumberOfDragons() throws InvalidNumberOfDragons{
+		String text = fldNumberOfDragons.getText();
+		if(isNumeric(text)){
+			int nDragons = Integer.parseInt(text);  
+			if(nDragons >= 1)
+				return nDragons;
+			else
+				throw new InvalidNumberOfDragons("Numero de dragoes invalido.");
+		}
+		throw new InvalidNumberOfDragons("Introduza um número em Numero de dragoes.");
 	}
 }
