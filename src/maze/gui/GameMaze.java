@@ -12,7 +12,7 @@ import maze.logic.GameState;
 import maze.logic.Position.Direction;
 
 @SuppressWarnings("serial")
-public class GameGraphicMaze extends JPanel 
+public class GameMaze extends JPanel 
 implements MouseListener, MouseMotionListener, KeyListener {
 
 	private JFrame frameGame;
@@ -32,7 +32,7 @@ implements MouseListener, MouseMotionListener, KeyListener {
 	
 	private GameState gamest;
 
-	public GameGraphicMaze(GameState gamest) {
+	public GameMaze(GameState gamest) {
 		setBounds(0, 0, 594, 571);
 		frameGame = new JFrame("Maze Game");
 		frameGame.setResizable(false);
