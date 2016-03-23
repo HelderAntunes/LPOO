@@ -2,7 +2,6 @@ package maze.logic;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Random;
 
 import maze.logic.Position.Direction;
@@ -12,7 +11,6 @@ import maze.logic.Position.Direction;
  */
 @SuppressWarnings("serial")
 public class GameState implements Serializable{
-	private Date date = new Date();
 	public enum Dificulty {EASY, MEDIUM, HARD}
 	private Dificulty dificulty;
 	private Maze maze;
@@ -297,10 +295,6 @@ public class GameState implements Serializable{
 				else 
 					s = s + gameBoard[i][j] + " ";
 		return s;
-	}
-
-	public Date getDate() {
-		return date;
 	}
 }
 
