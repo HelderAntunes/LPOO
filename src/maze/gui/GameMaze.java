@@ -4,7 +4,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -16,6 +19,7 @@ public class GameMaze extends JPanel
 implements MouseListener, MouseMotionListener, KeyListener {
 
 	private JFrame frameGame;
+	JButton btnSaveGame;
 
 	// Coordinates of the bounding rectangle for drawing the image
 	private int x = 0, y = 0;
@@ -32,8 +36,8 @@ implements MouseListener, MouseMotionListener, KeyListener {
 	
 	private GameState gamest;
 
-	public GameMaze(GameState gamest) {
-		setBounds(0, 0, 594, 571);
+	public GameMaze(final GameState gamest) {
+		setBounds(45, 35, 501, 453);
 		frameGame = new JFrame("Maze Game");
 		frameGame.setResizable(false);
 		frameGame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);		
@@ -48,6 +52,32 @@ implements MouseListener, MouseMotionListener, KeyListener {
 		setLayout(null);
 
 		this.gamest = gamest;
+		
+		btnSaveGame = new JButton("Gravar jogo");
+		btnSaveGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ObjectOutputStream os= null;
+				try {
+					os= new ObjectOutputStream(new FileOutputStream("file.dat"));
+					os.writeInt(1);
+					os.writeObject(gamest);
+				}
+				catch (IOException e) {
+					System.out.println(e.getMessage());
+				}
+				finally { 
+					if (os!= null)
+						try {
+							os.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						} 
+				}
+				requestFocus();
+			}
+		});
+		btnSaveGame.setBounds(483, 517, 89, 23);
+		frameGame.getContentPane().add(btnSaveGame);
 		withSquare = this.getWidth()/gamest.getGameBoard().length;
 		heightSquare = this.getHeight()/gamest.getGameBoard().length;
 		try {

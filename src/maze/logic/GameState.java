@@ -1,6 +1,8 @@
 package maze.logic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 
 import maze.logic.Position.Direction;
@@ -8,14 +10,16 @@ import maze.logic.Position.Direction;
 /**
  * Represents the state of a game.
  */
-public class GameState {
+@SuppressWarnings("serial")
+public class GameState implements Serializable{
+	private Date date = new Date();
 	public enum Dificulty {EASY, MEDIUM, HARD}
 	private Dificulty dificulty;
 	private Maze maze;
-	private Hero hero;
-	private Sword sword;
+	private transient Hero hero;
+	private transient Sword sword;
 	private boolean isFinished;
-	private ArrayList<Dragon> dragons; 
+	private transient ArrayList<Dragon> dragons; 
 
 	/**
 	 * Constructor of GameState.
@@ -23,13 +27,14 @@ public class GameState {
 	 * @param boardOfMaze
 	 */
 	public GameState(char[][] boardOfMaze, Dificulty dificulty) {
-		dragons = new ArrayList<Dragon>();
 		isFinished = false;
 		this.dificulty = dificulty;
-		initializeMazeAndThePositionsOfElements(boardOfMaze);
+		initializeElementsOfGame(boardOfMaze);
+		maze = new Maze(boardOfMaze);
 	}
 
-	private void initializeMazeAndThePositionsOfElements(char[][] boardOfMaze){
+	public void initializeElementsOfGame(char[][] boardOfMaze){
+		dragons = new ArrayList<Dragon>();
 		for(int i = 0;i < boardOfMaze.length;i++)
 			for(int j = 0;j < boardOfMaze[0].length;j++){
 				char square = boardOfMaze[i][j];
@@ -47,9 +52,15 @@ public class GameState {
 					break;
 				}
 			}
-		maze = new Maze(boardOfMaze);
+		if(hero == null){
+			hero = new Hero(new Position(0, 0));
+			hero.isKilled();
+		}
+		if(sword == null){
+			sword = new Sword(new Position(1, 1));
+			sword.take();
+		}
 	}
-
 
 	/**
 	 * updates the state of game. 
@@ -113,7 +124,7 @@ public class GameState {
 		else return false;
 	}
 	/**
-	 * Updates the state of a dragon(sleep or wakeup).
+	 * Updates the state of a dragon(sleep or wake up).
 	 */
 	private void updateSleepingOfDragons(){
 		Random r = new Random();
@@ -231,6 +242,13 @@ public class GameState {
 				gameBoard[dragon.getPosition().getX()][dragon.getPosition().getY()] = 'F';
 		return gameBoard;
 	}
+	
+	/**
+	 * @return maze of game
+	 */
+	public Maze getMaze(){
+		return maze;
+	}
 
 	/**
 	 * Move hero in given direction.
@@ -279,6 +297,10 @@ public class GameState {
 				else 
 					s = s + gameBoard[i][j] + " ";
 		return s;
+	}
+
+	public Date getDate() {
+		return date;
 	}
 }
 

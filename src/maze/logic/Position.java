@@ -1,9 +1,12 @@
 package maze.logic;
 
+import java.io.Serializable;
+
 /**
  * Represents the position of an element of maze.
  */
-public class Position {
+@SuppressWarnings("serial")
+public class Position implements Serializable{
 	
 	/**
 	 * Represents the four possibles directions of a move.

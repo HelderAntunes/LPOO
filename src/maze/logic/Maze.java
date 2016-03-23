@@ -1,9 +1,12 @@
 package maze.logic;
 
+import java.io.Serializable;
+
 /**
  * Represents the maze of the game.
  */
-public class Maze {
+@SuppressWarnings("serial")
+public class Maze implements Serializable{
 	private char[][] board;
 	private Position exitPos;
 	

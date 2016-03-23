@@ -113,7 +113,6 @@ implements MouseListener, MouseMotionListener, KeyListener {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					lblWarnings.setText("");
-					dificulty = new Utilities().chooseDificulty(comboBoxTypeOfDragons.getSelectedIndex());
 					boardDimension = new Utilities().chooseBoardDimensions(fldMazeSize.getText());
 					board = new char[boardDimension][boardDimension];
 					setBoardEmpty();
@@ -170,6 +169,7 @@ implements MouseListener, MouseMotionListener, KeyListener {
 		btnPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				frame.dispose();
+				dificulty = new Utilities().chooseDificulty(comboBoxTypeOfDragons.getSelectedIndex());
 				new GameMaze(new GameState(board, dificulty));
 			}
 		});
