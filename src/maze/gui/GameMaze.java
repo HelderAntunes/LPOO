@@ -4,16 +4,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
-
 import maze.logic.GameState;
 import maze.logic.Position.Direction;
 
@@ -38,7 +32,7 @@ implements MouseListener, MouseMotionListener, KeyListener {
 	private BufferedImage wall;
 	
 	private GameState gamest;
-	ArrayList<GameState> savedGames = new ArrayList<GameState>();
+	ArrayList<GameState> savedGames;
 
 	public GameMaze(final GameState gamest) {
 		setBounds(45, 35, 501, 453);
@@ -57,35 +51,19 @@ implements MouseListener, MouseMotionListener, KeyListener {
 
 		this.gamest = gamest;
 		
-		readGames();
+		savedGames = new Utilities().readGames();
 		
 		btnSaveGame = new JButton("Gravar jogo");
 		btnSaveGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				savedGames.add(gamest);
-				ObjectOutputStream os= null;
-				try {
-					os= new ObjectOutputStream(new FileOutputStream("file.dat"));
-					os.writeInt(savedGames.size());
-					for(GameState game: savedGames)
-						os.writeObject(game);
-				}
-				catch (IOException e) {
-					System.out.println(e.getMessage());
-				}
-				finally { 
-					if (os!= null)
-						try {
-							os.close();
-						} catch (IOException e) {
-							e.printStackTrace();
-						} 
-				}
+				new Utilities().saveGames(savedGames);
 				requestFocus();
 			}
 		});
 		btnSaveGame.setBounds(483, 517, 89, 23);
 		frameGame.getContentPane().add(btnSaveGame);
+		
 		withSquare = this.getWidth()/gamest.getGameBoard().length;
 		heightSquare = this.getHeight()/gamest.getGameBoard().length;
 		try {
@@ -100,28 +78,6 @@ implements MouseListener, MouseMotionListener, KeyListener {
 		}
 
 		requestFocus();
-	}
-	
-	private void readGames(){
-		ObjectInputStream is = null;
-		try {
-			is = new ObjectInputStream(new FileInputStream("file.dat"));
-			int totalGamesSaved = is.readInt();
-			for(int i = 0;i < totalGamesSaved;i++){
-				GameState game = (GameState) is.readObject();
-				game.initializeElementsOfGame(game.getMaze().getBoard());
-				savedGames.add(game);
-			}
-		}
-		catch (IOException | ClassNotFoundException e1) {
-			System.out.println("erro ao ler");
-		}
-		finally { if (is != null)
-			try {
-				is.close();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			} }
 	}
 
 	public void paintComponent(Graphics g) {

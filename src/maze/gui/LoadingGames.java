@@ -3,17 +3,12 @@ package maze.gui;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import maze.logic.GameState;
 import javax.swing.JLabel;
 
-
 public class LoadingGames {
-	ArrayList<GameState> savedGames = new ArrayList<GameState>();
 
 	private JFrame frame;
 	private JButton btnLoadGame1;
@@ -23,72 +18,27 @@ public class LoadingGames {
 	private JButton btnLoadGame5;
 	private JButton btnNextGames;
 	private JButton btnPreviousGames;
+	private JButton btnEraseGame1;
+	private JButton btnEraseGame2;
+	private JButton btnEraseGame3;
+	private JButton btnEraseGame4;
+	private JButton btnEraseGame5;
 	private JLabel lblGame1;
 	private JLabel lblGame2;
 	private JLabel lblGame3;
 	private JLabel lblGame4;
 	private JLabel lblGame5;
 
+	ArrayList<GameState> savedGames;
 	private int atualPage = 1;
 
-	/**
-	 * Create the application.
-	 */
 	public LoadingGames() {
-		readGames();
+		savedGames = new Utilities().readGames();
 		initialize();
-		btnPreviousGames.setEnabled(false);
-		if(savedGames.size() <= 5)
-			btnNextGames.setEnabled(false);
-		for(int i = 1;i <= savedGames.size() && i <= 5;i++){
-			if(i == 1)
-				lblGame1.setText("jogo " + i);
-			else if(i == 2)
-				lblGame2.setText("jogo " + i);
-			else if(i == 3)
-				lblGame3.setText("jogo " + i);
-			else if(i == 4)
-				lblGame4.setText("jogo " + i);
-			else if(i == 5)
-				lblGame5.setText("jogo " + i);
-		}
-		updateButtonsOfLoadGames();
+		updateStateOfButtonsAndLabels();
 		frame.setVisible(true);
 	}
 
-	private void updateButtonsOfLoadGames(){
-		for(int i = 1;i <= 5;i++){
-			if(i == 1)
-				if(((atualPage-1)*5 + 0) >= savedGames.size())
-					btnLoadGame1.setEnabled(false);
-				else
-					btnLoadGame1.setEnabled(true);
-			else if(i == 2) 
-				if(((atualPage-1)*5 + 1) >= savedGames.size())
-					btnLoadGame2.setEnabled(false);
-				else
-					btnLoadGame2.setEnabled(true);
-			else if(i == 3) 
-				if(((atualPage-1)*5 + 2) >= savedGames.size())
-					btnLoadGame3.setEnabled(false);
-				else
-					btnLoadGame3.setEnabled(true);
-			else if(i == 4) 
-				if(((atualPage-1)*5 + 3) >= savedGames.size())
-					btnLoadGame4.setEnabled(false);
-				else
-					btnLoadGame4.setEnabled(true);
-			else if(i == 5) 
-				if(((atualPage-1)*5 + 4) >= savedGames.size())
-					btnLoadGame5.setEnabled(false);
-				else
-					btnLoadGame5.setEnabled(true);
-		}
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 527, 388);
@@ -98,13 +48,10 @@ public class LoadingGames {
 		btnLoadGame1 = new JButton("Carregar jogo");
 		btnLoadGame1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(((atualPage-1)*5 + 0) >= savedGames.size()){
-					btnLoadGame1.setEnabled(false);
-				}
 				frame.dispose();
 				new GameMaze(savedGames.get((atualPage-1)*5 + 0));
 			}});
-		btnLoadGame1.setBounds(302, 39, 124, 23);
+		btnLoadGame1.setBounds(229, 39, 124, 23);
 		frame.getContentPane().add(btnLoadGame1);
 
 		btnLoadGame2 = new JButton("Carregar jogo");
@@ -114,7 +61,7 @@ public class LoadingGames {
 				new GameMaze(savedGames.get((atualPage-1)*5 + 1));
 			}
 		});
-		btnLoadGame2.setBounds(302, 88, 124, 23);
+		btnLoadGame2.setBounds(229, 88, 124, 23);
 		frame.getContentPane().add(btnLoadGame2);
 
 		btnLoadGame3 = new JButton("Carregar jogo");
@@ -124,7 +71,7 @@ public class LoadingGames {
 				new GameMaze(savedGames.get((atualPage-1)*5 + 2));
 			}
 		});
-		btnLoadGame3.setBounds(302, 137, 124, 23);
+		btnLoadGame3.setBounds(229, 137, 124, 23);
 		frame.getContentPane().add(btnLoadGame3);
 
 		btnLoadGame4 = new JButton("Carregar jogo");
@@ -134,7 +81,7 @@ public class LoadingGames {
 				new GameMaze(savedGames.get((atualPage-1)*5 + 3));
 			}
 		});
-		btnLoadGame4.setBounds(302, 189, 124, 23);
+		btnLoadGame4.setBounds(229, 189, 124, 23);
 		frame.getContentPane().add(btnLoadGame4);
 
 		btnLoadGame5 = new JButton("Carregar jogo");
@@ -144,27 +91,82 @@ public class LoadingGames {
 				new GameMaze(savedGames.get((atualPage-1)*5 + 4));
 			}
 		});
-		btnLoadGame5.setBounds(302, 245, 124, 23);
+		btnLoadGame5.setBounds(229, 245, 124, 23);
 		frame.getContentPane().add(btnLoadGame5);
 
+		btnEraseGame1 = new JButton("Eliminar jogo");
+		btnEraseGame1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				savedGames.remove((atualPage-1)*5 + 0);
+				updateStateOfButtonsAndLabels();
+				new Utilities().saveGames(savedGames);
+			}
+		});
+		btnEraseGame1.setBounds(377, 39, 124, 23);
+		frame.getContentPane().add(btnEraseGame1);
+
+		btnEraseGame2 = new JButton("Eliminar jogo");
+		btnEraseGame2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				savedGames.remove((atualPage-1)*5 + 1);
+				updateStateOfButtonsAndLabels();
+				new Utilities().saveGames(savedGames);
+			}
+		});
+		btnEraseGame2.setBounds(377, 88, 124, 23);
+		frame.getContentPane().add(btnEraseGame2);
+
+		btnEraseGame3 = new JButton("Eliminar jogo");
+		btnEraseGame3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				savedGames.remove((atualPage-1)*5 + 2);
+				updateStateOfButtonsAndLabels();
+				new Utilities().saveGames(savedGames);
+			}
+		});
+		btnEraseGame3.setBounds(377, 137, 124, 23);
+		frame.getContentPane().add(btnEraseGame3);
+
+		btnEraseGame4 = new JButton("Eliminar jogo");
+		btnEraseGame4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				savedGames.remove((atualPage-1)*5 + 3);
+				updateStateOfButtonsAndLabels();
+				new Utilities().saveGames(savedGames);
+			}
+		});
+		btnEraseGame4.setBounds(377, 189, 124, 23);
+		frame.getContentPane().add(btnEraseGame4);
+
+		btnEraseGame5 = new JButton("Eliminar jogo");
+		btnEraseGame5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				savedGames.remove((atualPage-1)*5 + 4);
+				updateStateOfButtonsAndLabels();
+				new Utilities().saveGames(savedGames);
+			}
+		});
+		btnEraseGame5.setBounds(377, 245, 124, 23);
+		frame.getContentPane().add(btnEraseGame5);
+
 		lblGame1 = new JLabel("Jogo inexistente");
-		lblGame1.setBounds(104, 43, 91, 14);
+		lblGame1.setBounds(52, 43, 141, 14);
 		frame.getContentPane().add(lblGame1);
 
 		lblGame2 = new JLabel("Jogo inexistente");
-		lblGame2.setBounds(104, 92, 91, 14);
+		lblGame2.setBounds(52, 92, 141, 14);
 		frame.getContentPane().add(lblGame2);
 
 		lblGame3 = new JLabel("Jogo inexistente");
-		lblGame3.setBounds(104, 141, 91, 14);
+		lblGame3.setBounds(52, 141, 141, 14);
 		frame.getContentPane().add(lblGame3);
 
 		lblGame4 = new JLabel("Jogo inexistente");
-		lblGame4.setBounds(104, 193, 91, 14);
+		lblGame4.setBounds(52, 193, 141, 14);
 		frame.getContentPane().add(lblGame4);
 
 		lblGame5 = new JLabel("Jogo inexistente");
-		lblGame5.setBounds(104, 249, 91, 14);
+		lblGame5.setBounds(52, 249, 141, 14);
 		frame.getContentPane().add(lblGame5);
 
 		btnNextGames = new JButton("Pr\u00F3ximos jogos");
@@ -172,36 +174,7 @@ public class LoadingGames {
 			public void actionPerformed(ActionEvent arg0) {
 				btnPreviousGames.setEnabled(true);
 				atualPage++;
-				for(int i = 0;i+(atualPage-1)*5 < savedGames.size() && i < 5;i++){
-					if(i == 0)
-						lblGame1.setText("jogo " + ((atualPage-1)*5 + 1));
-					else if(i == 1)
-						lblGame2.setText("jogo " + ((atualPage-1)*5 + 2));
-					else if(i == 2)
-						lblGame3.setText("jogo " + ((atualPage-1)*5 + 3));
-					else if(i == 3)
-						lblGame4.setText("jogo " + ((atualPage-1)*5 + 4));
-					else if(i == 4)
-						lblGame5.setText("jogo " + ((atualPage-1)*5 + 5));
-
-					if(i+(atualPage-1)*5 == savedGames.size()-1){
-						for(int j = i+1;j < 5;j++){
-							if(j == 0)
-								lblGame1.setText("Jogo inexistente");
-							else if(j == 1)
-								lblGame2.setText("Jogo inexistente");
-							else if(j == 2)
-								lblGame3.setText("Jogo inexistente");
-							else if(j == 3)
-								lblGame4.setText("Jogo inexistente");
-							else if(j == 4)
-								lblGame5.setText("Jogo inexistente");
-						}
-					}
-				}
-				if(savedGames.size() <= 5*atualPage)
-					btnNextGames.setEnabled(false);
-				updateButtonsOfLoadGames();
+				updateStateOfButtonsAndLabels();
 			}
 		});
 		btnNextGames.setBounds(285, 315, 141, 23);
@@ -211,65 +184,88 @@ public class LoadingGames {
 		btnPreviousGames.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				atualPage--;
-				for(int i = 0;i+(atualPage-1)*5 < savedGames.size() && i < 5;i++){
-					if(i == 0)
-						lblGame1.setText("jogo " + ((atualPage-1)*5 + 1));
-					else if(i == 1)
-						lblGame2.setText("jogo " + ((atualPage-1)*5 + 2));
-					else if(i == 2)
-						lblGame3.setText("jogo " + ((atualPage-1)*5 + 3));
-					else if(i == 3)
-						lblGame4.setText("jogo " + ((atualPage-1)*5 + 4));
-					else if(i == 4)
-						lblGame5.setText("jogo " + ((atualPage-1)*5 + 5));
-
-					if(i+(atualPage-1)*5 == savedGames.size()-1){
-						for(int j = i+1;j < 5;j++){
-							if(j == 0)
-								lblGame1.setText("Jogo inexistente");
-							else if(j == 1)
-								lblGame2.setText("Jogo inexistente");
-							else if(j == 2)
-								lblGame3.setText("Jogo inexistente");
-							else if(j == 3)
-								lblGame4.setText("Jogo inexistente");
-							else if(j == 4)
-								lblGame5.setText("Jogo inexistente");
-						}
-					}
-				}
-				if(atualPage == 1)
-					btnPreviousGames.setEnabled(false);
-				if(savedGames.size() <= 5*atualPage)
-					btnNextGames.setEnabled(false);
-				else
-					btnNextGames.setEnabled(true);
-				updateButtonsOfLoadGames();
+				updateStateOfButtonsAndLabels();
 			}
 		});
 		btnPreviousGames.setBounds(104, 315, 118, 23);
 		frame.getContentPane().add(btnPreviousGames);
 	}
 
-	private void readGames(){
-		ObjectInputStream is = null;
-		try {
-			is = new ObjectInputStream(new FileInputStream("file.dat"));
-			int totalGamesSaved = is.readInt();
-			for(int i = 0;i < totalGamesSaved;i++){
-				GameState game = (GameState) is.readObject();
-				game.initializeElementsOfGame(game.getMaze().getBoard());
-				savedGames.add(game);
+	private JLabel getLblGame(int i){
+		switch(i){
+		case 1:
+			return lblGame1;
+		case 2:
+			return lblGame2;
+		case 3:
+			return lblGame3;
+		case 4:
+			return lblGame4;
+		case 5:
+			return lblGame5;
+		default:
+			return null;
+		}
+	}
+
+	private JButton getBtnLoadGame(int i){
+		switch(i){
+		case 1:
+			return btnLoadGame1;
+		case 2:
+			return btnLoadGame2;
+		case 3:
+			return btnLoadGame3;
+		case 4:
+			return btnLoadGame4;
+		case 5:
+			return btnLoadGame5;
+		default:
+			return null;
+		}
+	}
+
+	private JButton getBtnEraseGame(int i){
+		switch(i){
+		case 1:
+			return btnEraseGame1;
+		case 2:
+			return btnEraseGame2;
+		case 3:
+			return btnEraseGame3;
+		case 4:
+			return btnEraseGame4;
+		case 5:
+			return btnEraseGame5;
+		default:
+			return null;
+		}
+	}
+
+	private void updateStateOfButtonsAndLabels(){
+		// update labels
+		for(int i = 1;i <= 5;i++){
+			if(i+(atualPage-1)*5 <= savedGames.size())
+				getLblGame(i).setText("jogo " + ((atualPage-1)*5 + i));
+			else
+				getLblGame(i).setText("Jogo inexistente");
+		}
+		// update next and previous buttons
+		if(atualPage == 1)
+			btnPreviousGames.setEnabled(false);
+		if(savedGames.size() <= 5*atualPage)
+			btnNextGames.setEnabled(false);
+		else
+			btnNextGames.setEnabled(true);
+		// update buttons of load and erase games
+		for(int i = 1;i <= 5;i++)
+			if(((atualPage-1)*5 + i) > savedGames.size()){
+				getBtnLoadGame(i).setEnabled(false);
+				getBtnEraseGame(i).setEnabled(false);
 			}
-		}
-		catch (IOException | ClassNotFoundException e1) {
-			System.out.println("erro ao ler");
-		}
-		finally { if (is != null)
-			try {
-				is.close();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			} }
+			else{
+				getBtnLoadGame(i).setEnabled(true);
+				getBtnEraseGame(i).setEnabled(true);
+			}
 	}
 }
