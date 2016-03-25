@@ -2,13 +2,10 @@ package maze.gui;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import maze.logic.GameState;
+import maze.logic.Position;
 import maze.logic.Position.Direction;
 
 @SuppressWarnings("serial")
@@ -16,26 +13,18 @@ public class GameMaze extends JPanel
 implements MouseListener, MouseMotionListener, KeyListener {
 
 	private JFrame frameGame;
-	JButton btnSaveGame;
+	private JButton btnSaveGame;
 
-	// Coordinates of the bounding rectangle for drawing the image
-	private int x = 0, y = 0;
-	private int withSquare;
-	private int heightSquare;
-
-	// in-memory representation of images of elements of game
-	private BufferedImage hero;
-	private BufferedImage dragon;
-	private BufferedImage sword;
-	private BufferedImage exit;
-	private BufferedImage pathWithNoElements;
-	private BufferedImage wall;
-	
+	private Position position = new Position(0,0);/**< position for draw. */
+	private int sizeSquare;/**< size of a square for draw. */
+	private final int boardSizeInFrame = 450;
+	private ImagesOfGame images = new ImagesOfGame();
 	private GameState gamest;
-	ArrayList<GameState> savedGames;
+	private ArrayList<GameState> savedGames;
 
 	public GameMaze(final GameState gamest) {
 		setBounds(45, 35, 501, 453);
+		
 		frameGame = new JFrame("Maze Game");
 		frameGame.setResizable(false);
 		frameGame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);		
@@ -44,14 +33,6 @@ implements MouseListener, MouseMotionListener, KeyListener {
 		frameGame.getContentPane().add(this);
 		frameGame.pack(); 
 		frameGame.setVisible(true);
-		this.addMouseListener(this);
-		this.addMouseMotionListener(this);
-		this.addKeyListener(this);
-		setLayout(null);
-
-		this.gamest = gamest;
-		
-		savedGames = new Utilities().readGames();
 		
 		btnSaveGame = new JButton("Gravar jogo");
 		btnSaveGame.addActionListener(new ActionListener() {
@@ -61,21 +42,17 @@ implements MouseListener, MouseMotionListener, KeyListener {
 				requestFocus();
 			}
 		});
-		btnSaveGame.setBounds(483, 517, 89, 23);
+		btnSaveGame.setBounds(275, 514, 89, 23);
 		frameGame.getContentPane().add(btnSaveGame);
 		
-		withSquare = this.getWidth()/gamest.getGameBoard().length;
-		heightSquare = this.getHeight()/gamest.getGameBoard().length;
-		try {
-			hero =  ImageIO.read(new File("images/hero.jpg"));
-			dragon =  ImageIO.read(new File("images/dragon.jpg"));
-			sword =  ImageIO.read(new File("images/sword.jpg"));
-			exit =  ImageIO.read(new File("images/exit.jpg"));
-			pathWithNoElements =  ImageIO.read(new File("images/pathWithNoElements.jpg"));
-			wall =  ImageIO.read(new File("images/wall.jpg"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.gamest = gamest;
+		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
+		this.addKeyListener(this);
+		setLayout(null);
+
+		savedGames = new Utilities().readGames();
+		sizeSquare = boardSizeInFrame/gamest.getGameBoard().length;
 
 		requestFocus();
 	}
@@ -83,40 +60,18 @@ implements MouseListener, MouseMotionListener, KeyListener {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g); 
 		char[][] gameBoard = gamest.getGameBoard();
-		x = y = 0;
+		position.setXY(20, 0);
 		for(int i = 0;i < gameBoard.length;i++){
 			for(int j = 0;j < gameBoard.length;j++){
 				char c = gameBoard[i][j];
-				if(c == 'H')
-					drawElementOfGame(g, hero);
-				else if(c == 'A')
-					drawElementOfGame(g, hero);
-				else if(c == 'D')
-					drawElementOfGame(g, dragon);
-				else if(c == 'd')
-					drawElementOfGame(g, dragon);
-				else if(c == 'E')
-					drawElementOfGame(g, sword);
-				else if(c == 'F')
-					drawElementOfGame(g, dragon);
-				else if(c == 'S')
-					drawElementOfGame(g, exit);
-				else if(c == ' ')
-					drawElementOfGame(g, pathWithNoElements);
-				else if(c == 'X')
-					drawElementOfGame(g, wall);
-				x += withSquare;
-
+				images.drawElementOfGame(g, c, sizeSquare, position);
+				position.setX(position.getX()+sizeSquare);
 			}
-			x = 0;
-			y += heightSquare;
+			position.setX(20);
+			position.setY(position.getY()+sizeSquare);
 		}
 	}
-
-	private void drawElementOfGame(Graphics g, BufferedImage elementImage){
-		g.drawImage(elementImage, x, y, x + withSquare - 1, y + heightSquare - 1, 0, 0, elementImage.getWidth(), elementImage.getHeight(), null);
-	}
-
+	
 	private void playGameRound(Direction dirMovimentHero){		
 		if(gamest.heroMoveIsValid(dirMovimentHero)){
 			gamest.moveHero(dirMovimentHero);
@@ -124,19 +79,6 @@ implements MouseListener, MouseMotionListener, KeyListener {
 		}
 		repaint();
 	}
-
-	// ignored mouse events
-	public void mousePressed(MouseEvent e) {} 
-	public void mouseDragged(MouseEvent e) {}
-	public void mouseReleased(MouseEvent e) {}
-	public void mouseMoved(MouseEvent arg0) { }
-	public void mouseClicked(MouseEvent e) {}
-	public void mouseEntered(MouseEvent e) {}
-	public void mouseExited(MouseEvent e) {}
-	
-	// Ignored keyboard events
-	public void keyReleased(KeyEvent e) {}
-	public void keyTyped(KeyEvent e) {}
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -159,4 +101,17 @@ implements MouseListener, MouseMotionListener, KeyListener {
 			}	
 		}
 	}
+	
+	// ignored mouse events
+	public void mousePressed(MouseEvent e) {} 
+	public void mouseDragged(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {}
+	public void mouseMoved(MouseEvent arg0) { }
+	public void mouseClicked(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {}
+	
+	// Ignored keyboard events
+	public void keyReleased(KeyEvent e) {}
+	public void keyTyped(KeyEvent e) {}
 }

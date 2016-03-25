@@ -34,7 +34,7 @@ public class Position implements Serializable{
 	}
 	/**
 	 * 
-	 * @return cordinate y of a position
+	 * @return coordinate y of a position
 	 */
 	public int getY(){
 		return y;
@@ -94,5 +94,18 @@ public class Position implements Serializable{
 			return true;
 
 		return false;
+	}
+	
+	public void setXY(int x, int y){
+		this.x = x;
+		this.y = y;
+	}
+	
+	public void setX(int x){
+		this.x = x;
+	}
+	
+	public void setY(int y){
+		this.y = y;
 	}
 }

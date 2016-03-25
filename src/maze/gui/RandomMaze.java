@@ -17,18 +17,16 @@ import java.awt.Color;
 
 
 public class RandomMaze {
-
+	
+	private JComboBox<String> comboBoxTypeOfDragons;
 	private JFrame frmJogoDoLabirinto;
 	private JTextField fldMazeSize;
 	private JTextField fldNumberOfDragons;
-	private JComboBox<String> comboBoxTypeOfDragons;
 	private JLabel lbldragonType;
-
 	private JLabel lblmazeSize;
 	private JLabel lbldragonsNumber;
-	private JButton btnGenerateMaze;
 	private JLabel atualStateOfProgram;
-
+	private JButton btnGenerateMaze;
 	private GameState gamest;
 
 	public RandomMaze() {
@@ -36,9 +34,6 @@ public class RandomMaze {
 		frmJogoDoLabirinto.setVisible(true);
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 		frmJogoDoLabirinto = new JFrame();
 		frmJogoDoLabirinto.setResizable(false);
