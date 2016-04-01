@@ -10,21 +10,25 @@ import maze.logic.Position;
 public class ImagesOfGame {
 	
 	private BufferedImage hero;
+	private BufferedImage heroArmed;
 	private BufferedImage dragon;
+	private BufferedImage dragonSleeping;
 	private BufferedImage sword;
 	private BufferedImage exit;
-	private BufferedImage pathWithNoElements;
+	private BufferedImage path;
 	private BufferedImage wall;
 	private BufferedImage cross;
 	
 	public ImagesOfGame(){
 		try {
-			hero =  ImageIO.read(new File("images/hero.jpg"));
-			dragon =  ImageIO.read(new File("images/dragon.jpg"));
-			sword =  ImageIO.read(new File("images/sword.jpg"));
-			exit =  ImageIO.read(new File("images/exit.jpg"));
-			pathWithNoElements =  ImageIO.read(new File("images/pathWithNoElements.jpg"));
-			wall =  ImageIO.read(new File("images/wall.jpg"));
+			hero =  ImageIO.read(new File("images/hero.png"));
+			heroArmed = ImageIO.read(new File("images/heroArmed.png"));
+			dragon =  ImageIO.read(new File("images/dragon.png"));
+			dragonSleeping = ImageIO.read(new File("images/dragonSleeping.png"));
+			sword =  ImageIO.read(new File("images/sword.png"));
+			exit =  ImageIO.read(new File("images/exit.png"));
+			path =  ImageIO.read(new File("images/path.png"));
+			wall =  ImageIO.read(new File("images/wall.png"));
 			cross = ImageIO.read(new File("images/cross.bmp"));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -36,11 +40,11 @@ public class ImagesOfGame {
 		case 'H':
 			return hero;
 		case 'A':
-			return hero;
+			return heroArmed;
 		case 'D':
 			return dragon;
 		case 'd':
-			return dragon;
+			return dragonSleeping;
 		case 'F':
 			return dragon;
 		case 'E':
@@ -48,7 +52,7 @@ public class ImagesOfGame {
 		case 'S':
 			return exit;
 		case ' ':
-			return pathWithNoElements;
+			return path;
 		case 'X':
 			return wall;
 		default:
