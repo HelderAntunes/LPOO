@@ -227,6 +227,7 @@ implements MouseListener, MouseMotionListener, KeyListener {
 				iconSelected = ' '; // path
 			else if(ym >= 266 && ym <= 315)
 				iconSelected = 'X'; // wall
+		
 		// paint board
 		position.setXY(150, 16);
 		int i = (ym-position.getY())/sizeSquare;

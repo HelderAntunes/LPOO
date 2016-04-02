@@ -243,6 +243,7 @@ public class LoadingGames {
 	}
 
 	private void updateStateOfButtonsAndLabels(){
+		
 		// update labels
 		for(int i = 1;i <= 5;i++){
 			if(i+(atualPage-1)*5 <= savedGames.size())
@@ -250,6 +251,7 @@ public class LoadingGames {
 			else
 				getLblGame(i).setText("Jogo inexistente");
 		}
+		
 		// update next and previous buttons
 		if(atualPage == 1)
 			btnPreviousGames.setEnabled(false);
@@ -257,6 +259,7 @@ public class LoadingGames {
 			btnNextGames.setEnabled(false);
 		else
 			btnNextGames.setEnabled(true);
+			
 		// update buttons of load and erase games
 		for(int i = 1;i <= 5;i++)
 			if(((atualPage-1)*5 + i) > savedGames.size()){

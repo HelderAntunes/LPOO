@@ -30,7 +30,11 @@ public class GameState implements Serializable{
 		initializeElementsOfGame(boardOfMaze);
 		maze = new Maze(boardOfMaze);
 	}
-
+	
+	/**
+	 * Find characters in boadOfMaze and initialize the corresponding variables.
+	 * @param boardOfMaze
+	 */
 	public void initializeElementsOfGame(char[][] boardOfMaze){
 		dragons = new ArrayList<Dragon>();
 		for(int i = 0;i < boardOfMaze.length;i++)
@@ -61,7 +65,7 @@ public class GameState implements Serializable{
 	}
 
 	/**
-	 * updates the state of game. 
+	 * updates the state of game
 	 */
 	public void update(){
 
@@ -84,6 +88,7 @@ public class GameState implements Serializable{
 			isFinished = true;
 
 	}
+	
 	/**
 	 * Kills the a dragon if he is near to the armed hero, ou kills the hero if the hero is disarmed.
 	 */
@@ -121,6 +126,7 @@ public class GameState implements Serializable{
 		if(hero.getPosition().equals(sword.getPosition())) return true;
 		else return false;
 	}
+	
 	/**
 	 * Updates the state of a dragon(sleep or wake up).
 	 */
@@ -137,11 +143,10 @@ public class GameState implements Serializable{
 			}
 		}
 	}
+	
 	/**
-	 * 
-	 * @param dragon.
 	 * Generates a random movement of the dragon.
-	 * 
+	 * @param dragon.
 	 */
 	private void generateDragonNewMove(Dragon dragon){
 		Random r = new Random();
@@ -170,6 +175,7 @@ public class GameState implements Serializable{
 		dragon.move(dir);
 		maze.setSquare(dragon.getPosition(), dragon.getSymbol());
 	}
+	
 	/**
 	 * 
 	 * @param dragon.
@@ -186,6 +192,7 @@ public class GameState implements Serializable{
 		else
 			return true;
 	}
+	
 	/**
 	 * 
 	 * @return true if the game is finished or false if not
@@ -196,13 +203,15 @@ public class GameState implements Serializable{
 			return true;
 		return false;
 	}
+	
 	/**
-	 * 
-	 * @return the hero
+	 * Get hero
+	 * @return hero
 	 */
 	public Hero getHero(){
 		return hero;
 	}
+	
 	/**
 	 * 
 	 * @return an ArrayList that contains the dragons
@@ -210,6 +219,7 @@ public class GameState implements Serializable{
 	public ArrayList<Dragon> getDragons(){
 		return dragons;
 	}
+	
 	/**
 	 * 
 	 * @return the sword
@@ -225,7 +235,6 @@ public class GameState implements Serializable{
 	public boolean isFinished(){
 		return isFinished;
 	}
-
 
 	/**
 	 * get the game board.
@@ -272,8 +281,9 @@ public class GameState implements Serializable{
 		else
 			return true;
 	}
+	
 	/**
-	 * 
+	 * Check if a dragon was killed.
 	 * @return true if the dragon is dead or false if is still alive
 	 */
 	private boolean aDragonWasKilled(){
@@ -282,6 +292,7 @@ public class GameState implements Serializable{
 				return true;
 		return false;
 	}
+	
 	/**
 	 * returns the maze as a string.
 	 */

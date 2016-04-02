@@ -2,10 +2,9 @@ package maze.logic;
 
 import java.util.Random;
 import java.util.ArrayList;
+
 /**
- * 
  * The class is responsible for adding characters to the maze.
- *
  */
 public class AddingCharactersToMaze {
 	char[][] maze;
@@ -14,7 +13,7 @@ public class AddingCharactersToMaze {
 	Position swordPos;
 	
 	/**
-	 * 
+	 * Put in maze 1 hero, 1 sword and 1 dragon
 	 * @param maze
 	 * @return maze with the characters
 	 */
@@ -35,8 +34,9 @@ public class AddingCharactersToMaze {
 
 		return maze;
 	}
+	
 	/**
-	 * 
+	 * Add dragons in maze until numDragons. Remember: the is initialized with 1 dragon.
 	 * @param maze.
 	 * @param numDragons number of dragons.
 	 * @return maze with the number of dragons intended.
@@ -82,6 +82,7 @@ public class AddingCharactersToMaze {
 				else if(maze[i][j] == 'D' || maze[i][j] == 'd')
 					dragonsPos.add(new Position(i, j));
 	}
+	
 	/**
 	 * 
 	 * @return a random position
@@ -93,6 +94,7 @@ public class AddingCharactersToMaze {
 		}while(pos == null || positionIsInvalid(pos));
 		return pos;
 	}
+	
 	/**
 	 * 
 	 * @param pos
@@ -102,6 +104,7 @@ public class AddingCharactersToMaze {
 		if(maze[pos.getX()][pos.getY()] != ' ') return true;
 		else return false;
 	}
+	
 	/**
 	 * 
 	 * @return a random position

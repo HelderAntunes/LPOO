@@ -69,7 +69,7 @@ public class Utilities {
 			}
 		}
 		catch (IOException | ClassNotFoundException e1) {
-			System.out.println("erro ao ler");
+			
 		}
 		finally { if (is != null)
 			try {
