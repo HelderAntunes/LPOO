@@ -1,39 +1,27 @@
 package maze.logic;
 
-/**
- * Represents a hero.
- */
 public class Hero extends CharacterOfGame{
 	private boolean isArmed;
 	
-	/**
-	 * Constructor of Hero.
-	 * @param pos initial position of hero.
-	 * Sets isArmed to false(initialy the hero is disarmed)
-	 */
 	public Hero(Position pos){
 		super(pos);
 		isArmed = false;
 	}
 	
 	/**
-	 * To find out if the hero is armed.
-	 * @return true if hero is armed, false otherwise
+	 * @return true if hero is armed, false otherwise.
 	 */
 	public boolean isArmed(){
 		return isArmed;
 	}
 	
-	/**
-	 * Arm the hero.
-	 */
 	public void arm(){
 		isArmed = true;
 	}
 	
 	/**
-	 * Get symbol(represented by a char) of hero.
-	 * Return 'A' if hero is alive and armed, 'H' if is just alive, and ' ' if is dead.
+	 * Get char representation of hero
+	 * @return 'A' if is armed, 'H' if is disarmed, and ' ' if is dead.
 	 */
 	public char getSymbol(){
 		if(isAlive())

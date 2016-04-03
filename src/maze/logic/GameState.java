@@ -11,6 +11,10 @@ import maze.logic.Position.Direction;
  */
 @SuppressWarnings("serial")
 public class GameState implements Serializable{
+	/**
+	 * Enumerate the difficulty of game:
+	 * EASY - Dragon can´t move, MEDIUM - Dragon can move and sleep, HARD - Dragon can olny move
+	 */
 	public enum Dificulty {EASY, MEDIUM, HARD}
 	private Dificulty dificulty;
 	private Maze maze;
@@ -22,7 +26,8 @@ public class GameState implements Serializable{
 	/**
 	 * Constructor of GameState.
 	 * Initialize the board of maze and positions of elements of maze.
-	 * @param boardOfMaze
+	 * @param boardOfMaze the board of game with elements inside.
+	 * @param dificulty of game
 	 */
 	public GameState(char[][] boardOfMaze, Dificulty dificulty) {
 		isFinished = false;
@@ -32,8 +37,9 @@ public class GameState implements Serializable{
 	}
 	
 	/**
-	 * Find characters in boadOfMaze and initialize the corresponding variables.
-	 * @param boardOfMaze
+	 * Receive a board with elements inside, and search the hero, dragons and sword.
+	 * After, initialize the elements with the positions found.
+	 * @param boardOfMaze board received
 	 */
 	public void initializeElementsOfGame(char[][] boardOfMaze){
 		dragons = new ArrayList<Dragon>();
@@ -89,9 +95,6 @@ public class GameState implements Serializable{
 
 	}
 	
-	/**
-	 * Kills the a dragon if he is near to the armed hero, ou kills the hero if the hero is disarmed.
-	 */
 	private void killDragonsOrHeroIfNecessary(){
 		for(Dragon dragon: dragons)
 			if(heroIsNearToTheDragon(dragon) && dragon.isAlive())
@@ -109,27 +112,15 @@ public class GameState implements Serializable{
 				generateDragonNewMove(dragon);
 	}
 
-	/**
-	 * Check if hero is near of dragon.
-	 * @return true if the distance between the hero and dragon is 
-	 * equal or less than 1 in horizontal or vertical direction
-	 */
 	private boolean heroIsNearToTheDragon(Dragon dragon){
 		return hero.getPosition().positionsAreNearOfeachOther(dragon.getPosition());
 	}
 
-	/**
-	 * Check if hero found the sword.
-	 * @return true if the hero found the sword, false otherwise
-	 */
 	private boolean heroFoundSword(){
 		if(hero.getPosition().equals(sword.getPosition())) return true;
 		else return false;
 	}
 	
-	/**
-	 * Updates the state of a dragon(sleep or wake up).
-	 */
 	private void updateSleepingOfDragons(){
 		Random r = new Random();
 		for(Dragon dragon: dragons){
@@ -144,10 +135,6 @@ public class GameState implements Serializable{
 		}
 	}
 	
-	/**
-	 * Generates a random movement of the dragon.
-	 * @param dragon.
-	 */
 	private void generateDragonNewMove(Dragon dragon){
 		Random r = new Random();
 		int move;
@@ -176,12 +163,6 @@ public class GameState implements Serializable{
 		maze.setSquare(dragon.getPosition(), dragon.getSymbol());
 	}
 	
-	/**
-	 * 
-	 * @param dragon.
-	 * @param dir.
-	 * @return false if the movement is valid,or true if invalid
-	 */
 	private boolean dragonMoveIsInvalid(Dragon dragon, Direction dir){
 		Position dragonPos = dragon.getPosition();
 		Position oldPos = dragonPos.clone();
@@ -193,10 +174,6 @@ public class GameState implements Serializable{
 			return true;
 	}
 	
-	/**
-	 * 
-	 * @return true if the game is finished or false if not
-	 */
 	private boolean isGameFinished(){
 		if((aDragonWasKilled() && hero.getPosition().equals(maze.getExitPos()))
 				|| !hero.isAlive())
@@ -205,7 +182,7 @@ public class GameState implements Serializable{
 	}
 	
 	/**
-	 * Get hero
+	 * Get hero.
 	 * @return hero
 	 */
 	public Hero getHero(){
@@ -213,16 +190,16 @@ public class GameState implements Serializable{
 	}
 	
 	/**
-	 * 
-	 * @return an ArrayList that contains the dragons
+	 * Get a ArrayList of dragons.
+	 * @return dragons
 	 */
 	public ArrayList<Dragon> getDragons(){
 		return dragons;
 	}
 	
 	/**
-	 * 
-	 * @return the sword
+	 * Get sword.
+	 * @return sword
 	 */
 	public Sword getSword(){
 		return sword;
@@ -230,7 +207,7 @@ public class GameState implements Serializable{
 
 	/**
 	 * Check if the game is finished.
-	 * @return true if game is finished, false other wise
+	 * @return true if game is finished, false otherwise
 	 */
 	public boolean isFinished(){
 		return isFinished;
@@ -239,6 +216,7 @@ public class GameState implements Serializable{
 	/**
 	 * get the game board.
 	 * The game board is a maze with the elements represented.
+	 * @return array bidimensional representing the board
 	 */
 	public char[][] getGameBoard(){
 		char[][] gameBoard = maze.getBoard();
@@ -251,6 +229,7 @@ public class GameState implements Serializable{
 	}
 	
 	/**
+	 * Get maze of game
 	 * @return maze of game
 	 */
 	public Maze getMaze(){
@@ -258,7 +237,7 @@ public class GameState implements Serializable{
 	}
 
 	/**
-	 * Move hero in given direction.
+	 * Move hero one position in given direction.
 	 * @param dir given direction
 	 */
 	public void moveHero(Direction dir){
@@ -282,30 +261,11 @@ public class GameState implements Serializable{
 			return true;
 	}
 	
-	/**
-	 * Check if a dragon was killed.
-	 * @return true if the dragon is dead or false if is still alive
-	 */
 	private boolean aDragonWasKilled(){
 		for(Dragon dragon: dragons)
 			if(!dragon.isAlive())
 				return true;
 		return false;
-	}
-	
-	/**
-	 * returns the maze as a string.
-	 */
-	public String toString(){
-		String s = "";
-		char [][] gameBoard = getGameBoard();
-		for(int i=0;i<gameBoard.length;i++)
-			for(int j=0;j<gameBoard.length;j++)
-				if(j==gameBoard.length-1)
-					s = s + gameBoard[i][j] + "\n";
-				else 
-					s = s + gameBoard[i][j] + " ";
-		return s;
 	}
 }
 

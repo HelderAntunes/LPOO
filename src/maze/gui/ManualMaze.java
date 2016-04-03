@@ -148,9 +148,20 @@ implements MouseListener, MouseMotionListener, KeyListener {
 		btnPlay = new JButton("Come\u00E7ar a jogar");
 		btnPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frame.dispose();
-				dificulty = new Utilities().chooseDificulty(comboBoxTypeOfDragons.getSelectedIndex());
-				new GameMaze(new GameState(board, dificulty));
+				if(exitExistsInPositionValid() == false)
+					lblWarnings.setText("Posicao de saida invalida!!!");
+				else if(heroExistInPositionValid() == false)
+					lblWarnings.setText("Posicao do heroi invalida!!!");
+				else if(dragonsExistsInPositionValid() == false)
+					lblWarnings.setText("Posicao do dragao invalida!!!");
+				else if(swordExistsInPositionValid() == false)
+					lblWarnings.setText("Posicao da espada invalida!!!");
+				else{
+					frame.dispose();
+					dificulty = new Utilities().chooseDificulty(comboBoxTypeOfDragons.getSelectedIndex());
+					new GameMaze(new GameState(board, dificulty));
+				}
+				
 			}
 		});
 		btnPlay.setBounds(315, 524, 146, 23);
@@ -158,6 +169,37 @@ implements MouseListener, MouseMotionListener, KeyListener {
 		btnPlay.setEnabled(false);
 
 		requestFocus();
+	}
+	
+	private boolean exitExistsInPositionValid(){
+		for(int i = 0;i < board.length;i++)
+			if(board[i][0] == 'S' 
+				|| board[i][board.length-1] == 'S'
+				|| board[board.length-1][i] == 'S' 
+				|| board[0][i] == 'S')
+				return true;
+		
+		return false;
+	}
+	
+	private boolean heroExistInPositionValid(){
+		return searchElementInBoard('H');
+	}
+	
+	private boolean dragonsExistsInPositionValid(){
+		return searchElementInBoard('D');
+	}
+	
+	private boolean swordExistsInPositionValid(){
+		return searchElementInBoard('E');
+	}
+	
+	private boolean searchElementInBoard(char elem){
+		for(int i = 1;i < board.length-1;i++)
+			for(int j = 1;j < board.length-1;j++)
+				if(board[i][j] == elem)
+					return true;
+		return false;
 	}
 
 	public void setBoardEmpty(){
@@ -213,7 +255,6 @@ implements MouseListener, MouseMotionListener, KeyListener {
 		int xm = e.getX();
 		int ym = e.getY();
 
-		// icons
 		if(xm >= 5 && xm <= 54)
 			if(ym >= 16 && ym <= 65)
 				iconSelected = 'H'; // hero
@@ -228,7 +269,6 @@ implements MouseListener, MouseMotionListener, KeyListener {
 			else if(ym >= 266 && ym <= 315)
 				iconSelected = 'X'; // wall
 		
-		// paint board
 		position.setXY(150, 16);
 		int i = (ym-position.getY())/sizeSquare;
 		int j = (xm-position.getX())/sizeSquare;

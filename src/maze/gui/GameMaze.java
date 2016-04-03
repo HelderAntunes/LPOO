@@ -14,6 +14,7 @@ implements MouseListener, MouseMotionListener, KeyListener {
 
 	private JFrame frameGame;
 	private JButton btnSaveGame;
+	private JLabel lblWarnings;
 
 	private Position position = new Position(0,0);/**< position for draw. */
 	private int sizeSquare;/**< size of a square for draw. */
@@ -42,7 +43,7 @@ implements MouseListener, MouseMotionListener, KeyListener {
 				requestFocus();
 			}
 		});
-		btnSaveGame.setBounds(275, 514, 89, 23);
+		btnSaveGame.setBounds(448, 514, 136, 23);
 		frameGame.getContentPane().add(btnSaveGame);
 		
 		this.gamest = gamest;
@@ -50,6 +51,11 @@ implements MouseListener, MouseMotionListener, KeyListener {
 		this.addMouseMotionListener(this);
 		this.addKeyListener(this);
 		setLayout(null);
+		
+		lblWarnings = new JLabel("Prime as setas para mover o heroi.");
+		lblWarnings.setForeground(Color.RED);
+		lblWarnings.setBounds(27, 514, 333, 23);
+		frameGame.getContentPane().add(lblWarnings);
 
 		savedGames = new Utilities().readGames();
 		sizeSquare = boardSizeInFrame/gamest.getGameBoard().length;
@@ -72,11 +78,17 @@ implements MouseListener, MouseMotionListener, KeyListener {
 		}
 	}
 	
-	private void playGameRound(Direction dirMovimentHero){		
+	private void playGameRound(Direction dirMovimentHero){
+		lblWarnings.setText("");
 		if(gamest.heroMoveIsValid(dirMovimentHero)){
 			gamest.moveHero(dirMovimentHero);
 			gamest.update();
 		}
+		if(gamest.isFinished())
+			if(gamest.getHero().isAlive())
+				lblWarnings.setText("O heroi conseguiu escapar!!! :)");
+			else
+				lblWarnings.setText("O heroi foi capturado... :(");
 		repaint();
 	}
 	

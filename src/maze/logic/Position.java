@@ -26,23 +26,20 @@ public class Position implements Serializable{
 		this.y = y;
 	}
 	/**
-	 * 
+	 * Get x coordinate.
 	 * @return coordinate x of a position
 	 */
 	public int getX(){
 		return x;
 	}
 	/**
-	 * 
+	 * Get y coordinate.
 	 * @return coordinate y of a position
 	 */
 	public int getY(){
 		return y;
 	}
 	
-	/**
-	 * @return a copy of Position(x,y)
-	 */
 	public Position clone(){
 		return new Position(x,y);
 	}
@@ -56,11 +53,6 @@ public class Position implements Serializable{
 		return false;
 	}
 	
-	/**
-	 * Change the coordinates of the position.
-	 * Can be a left, right, down or up move.
-	 * @param dir direction of move.
-	 */
 	public void changePos(Direction dir) {
 		switch(dir){
 		case LEFT:
@@ -79,11 +71,7 @@ public class Position implements Serializable{
 			break;
 		}
 	}
-	/**
-	 * 
-	 * @param otherPos position of an object.
-	 * @return true if the distance between two objects is less than a square,and false if not
-	 */
+
 	public boolean positionsAreNearOfeachOther(Position otherPos){
 		int xD = otherPos.getX();
 		int yD = otherPos.getY();
@@ -96,15 +84,28 @@ public class Position implements Serializable{
 		return false;
 	}
 	
+	/**
+	 * Set coordinates x and y.
+	 * @param x coordinate
+	 * @param y coordinate
+	 */
 	public void setXY(int x, int y){
 		this.x = x;
 		this.y = y;
 	}
 	
+	/**
+	 * Set coordinate x.
+	 * @param x coordinate
+	 */
 	public void setX(int x){
 		this.x = x;
 	}
 	
+	/**
+	 * Set coordinate y.
+	 * @param y coordinate
+	 */
 	public void setY(int y){
 		this.y = y;
 	}
